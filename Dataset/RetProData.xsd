@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="RetProData" targetNamespace="http://tempuri.org/RetProData.xsd" xmlns:mstns="http://tempuri.org/RetProData.xsd" xmlns="http://tempuri.org/RetProData.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="OraConnectionString" IsAppSettingsProperty="true" Modifier="Assembly" Name="OraConnectionString (Web.config)" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.OraConnectionString.ConnectionString" Provider="System.Data.OracleClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="RetProData" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="RetProData" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="RetProData">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BRAND" msprop:Generator_ColumnPropNameInTable="BRANDColumn" msprop:Generator_ColumnPropNameInRow="BRAND" msprop:Generator_UserColumnName="BRAND" msprop:Generator_ColumnVarNameInTable="columnBRAND" type="xs:string" minOccurs="0" />
+              <xs:element name="STORE_CODE" msprop:Generator_ColumnPropNameInTable="STORE_CODEColumn" msprop:Generator_ColumnPropNameInRow="STORE_CODE" msprop:Generator_UserColumnName="STORE_CODE" msprop:Generator_ColumnVarNameInTable="columnSTORE_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="STORE_NAME" msprop:Generator_ColumnPropNameInTable="STORE_NAMEColumn" msprop:Generator_ColumnPropNameInRow="STORE_NAME" msprop:Generator_UserColumnName="STORE_NAME" msprop:Generator_ColumnVarNameInTable="columnSTORE_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="PI_NAME" msprop:Generator_ColumnPropNameInTable="PI_NAMEColumn" msprop:Generator_ColumnPropNameInRow="PI_NAME" msprop:Generator_UserColumnName="PI_NAME" msprop:Generator_ColumnVarNameInTable="columnPI_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:Generator_ColumnPropNameInTable="CREATED_DATEColumn" msprop:Generator_ColumnPropNameInRow="CREATED_DATE" msprop:Generator_UserColumnName="CREATED_DATE" msprop:Generator_ColumnVarNameInTable="columnCREATED_DATE" type="xs:string" minOccurs="0" />
+              <xs:element name="POST_DATE" msprop:Generator_ColumnPropNameInTable="POST_DATEColumn" msprop:Generator_ColumnPropNameInRow="POST_DATE" msprop:Generator_UserColumnName="POST_DATE" msprop:Generator_ColumnVarNameInTable="columnPOST_DATE" type="xs:string" minOccurs="0" />
+              <xs:element name="PI_STATUS" msprop:Generator_ColumnPropNameInTable="PI_STATUSColumn" msprop:Generator_ColumnPropNameInRow="PI_STATUS" msprop:Generator_UserColumnName="PI_STATUS" msprop:Generator_ColumnVarNameInTable="columnPI_STATUS" type="xs:string" minOccurs="0" />
+              <xs:element name="START_QTY" msprop:Generator_ColumnPropNameInTable="START_QTYColumn" msprop:Generator_ColumnPropNameInRow="START_QTY" msprop:Generator_UserColumnName="START_QTY" msprop:Generator_ColumnVarNameInTable="columnSTART_QTY" type="xs:string" minOccurs="0" />
+              <xs:element name="COUNTED_QTY" msprop:Generator_ColumnPropNameInTable="COUNTED_QTYColumn" msprop:Generator_ColumnPropNameInRow="COUNTED_QTY" msprop:Generator_UserColumnName="COUNTED_QTY" msprop:Generator_ColumnVarNameInTable="columnCOUNTED_QTY" type="xs:string" minOccurs="0" />
+              <xs:element name="DIFFERENCES_QTY" msprop:Generator_ColumnPropNameInTable="DIFFERENCES_QTYColumn" msprop:Generator_ColumnPropNameInRow="DIFFERENCES_QTY" msprop:Generator_UserColumnName="DIFFERENCES_QTY" msprop:Generator_ColumnVarNameInTable="columnDIFFERENCES_QTY" type="xs:string" minOccurs="0" />
+              <xs:element name="DIFFERENCES_SALES_PRICE" msprop:Generator_ColumnPropNameInTable="DIFFERENCES_SALES_PRICEColumn" msprop:Generator_ColumnPropNameInRow="DIFFERENCES_SALES_PRICE" msprop:Generator_UserColumnName="DIFFERENCES_SALES_PRICE" msprop:Generator_ColumnVarNameInTable="columnDIFFERENCES_SALES_PRICE" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:Generator_ColumnPropNameInTable="CREATED_BYColumn" msprop:Generator_ColumnPropNameInRow="CREATED_BY" msprop:Generator_UserColumnName="CREATED_BY" msprop:Generator_ColumnVarNameInTable="columnCREATED_BY" type="xs:string" minOccurs="0" />
+              <xs:element name="EXPORTED_DATETIME" msprop:Generator_ColumnPropNameInTable="EXPORTED_DATETIMEColumn" msprop:Generator_ColumnPropNameInRow="EXPORTED_DATETIME" msprop:Generator_UserColumnName="EXPORTED_DATETIME" msprop:Generator_ColumnVarNameInTable="columnEXPORTED_DATETIME" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATETIME" msprop:Generator_ColumnPropNameInTable="MODIFIED_DATETIMEColumn" msprop:Generator_ColumnPropNameInRow="MODIFIED_DATETIME" msprop:Generator_UserColumnName="MODIFIED_DATETIME" msprop:Generator_ColumnVarNameInTable="columnMODIFIED_DATETIME" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
