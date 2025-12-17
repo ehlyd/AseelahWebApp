@@ -1133,7 +1133,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox22</rd:DefaultName>
-        <Top>0.85625in</Top>
+        <Top>0.76875in</Top>
         <Height>0.18056in</Height>
         <Width>0.86458in</Width>
         <ZIndex>18</ZIndex>
@@ -1164,7 +1164,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox22</rd:DefaultName>
-        <Top>1.05486in</Top>
+        <Top>0.89236in</Top>
         <Height>0.18056in</Height>
         <Width>0.86458in</Width>
         <ZIndex>19</ZIndex>
@@ -1195,7 +1195,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox22</rd:DefaultName>
-        <Top>1.24375in</Top>
+        <Top>1.01875in</Top>
         <Height>0.18056in</Height>
         <Width>0.86458in</Width>
         <ZIndex>20</ZIndex>
@@ -1262,7 +1262,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>CREATED_DATE</rd:DefaultName>
-        <Top>0.85625in</Top>
+        <Top>0.76875in</Top>
         <Left>0.88931in</Left>
         <Height>0.18056in</Height>
         <Width>2.42708in</Width>
@@ -1296,7 +1296,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>CREATED_BY</rd:DefaultName>
-        <Top>1.05486in</Top>
+        <Top>0.89236in</Top>
         <Left>0.88931in</Left>
         <Height>0.18056in</Height>
         <Width>2.42708in</Width>
@@ -1844,7 +1844,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>MODIFIED_DATETIME</rd:DefaultName>
-        <Top>1.24375in</Top>
+        <Top>1.01875in</Top>
         <Left>0.88931in</Left>
         <Height>0.18056in</Height>
         <Width>2.42708in</Width>
@@ -1908,7 +1908,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox22</rd:DefaultName>
-        <Top>1.4382in</Top>
+        <Top>1.1507in</Top>
         <Height>0.18056in</Height>
         <Width>0.86458in</Width>
         <ZIndex>40</ZIndex>
@@ -1941,11 +1941,76 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ExecutionTime</rd:DefaultName>
-        <Top>1.4382in</Top>
+        <Top>1.1507in</Top>
         <Left>0.88931in</Left>
         <Height>0.18056in</Height>
         <Width>2.42708in</Width>
         <ZIndex>41</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox28">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>EBS PI No:</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>ExtraBold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox22</rd:DefaultName>
+        <Top>1.28819in</Top>
+        <Height>0.18056in</Height>
+        <Width>0.86458in</Width>
+        <ZIndex>42</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="EBS_PI_NO">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!EBS_PI_NO.Value, "DataSet1")</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>ExtraBold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>EBS_PI_NO</rd:DefaultName>
+        <Top>1.28819in</Top>
+        <Left>0.88931in</Left>
+        <Height>0.17833in</Height>
+        <Width>2.42708in</Width>
+        <ZIndex>43</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2043,10 +2108,14 @@
           <DataField>MODIFIED_DATETIME</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EBS_PI_NO">
+          <DataField>EBS_PI_NO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>RetProData</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\idabu\OneDrive - Al Jedaie Group\source .net 4.5.1\WebApp\AseelahWebApps\AseelahWebApps\Dataset\RetProData.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\Dataset\RetProData.xsd</rd:SchemaPath>
         <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

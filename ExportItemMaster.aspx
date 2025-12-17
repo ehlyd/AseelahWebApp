@@ -1,9 +1,34 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="ExportItemMaster.aspx.vb" Inherits="AseelahWebApps.ExportItemMaster" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        @media (min-width: 576px) {
+            .exportItems {
+                width: 80%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .exportItems {
+                width: 70%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .exportItems {
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .exportItems {
+                width: 50%;
+            }
+        }
+    </style>
 
     <br />
-    <div class="container" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke; width: 50%;  margin-left: 10%;">
+    <div class="container exportItems" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke; margin-left: 10%;">
         <h6 style="margin-top: 20px; margin-bottom: 20px;">Export Item Master</h6>
         <hr />
 
@@ -12,7 +37,7 @@
                 <asp:Label ID="Label2" class="col-form-label-sm" runat="server" Text="File Format"></asp:Label>
             </div>
             <div class="col-10">
-                <asp:RadioButton ID="rdoWindows" class="form-control-sm"  runat="server" GroupName="FileFormat" Text="Windows Device" />
+                <asp:RadioButton ID="rdoWindows" class="form-control-sm" runat="server" GroupName="FileFormat" Text="Windows Device" />
                 <asp:RadioButton ID="rdoAndroid" class="form-control-sm" Style="margin-left: 20px;" runat="server" GroupName="FileFormat" Text="Android Device" Checked="True" />
             </div>
 
@@ -30,9 +55,9 @@
 
         <div class="row" style="margin-bottom: 10px; width: 100%;">
             <div class="col-2"></div>
-            <div class="col-10" style="display:flex; align-items:end; justify-content:end;">
-                <asp:Button ID="btnExport" class="btn btn-secondary btn-sm" style="width:120px;" runat="server" Text="Export" onclientclick="showWaitCursor()"/>
-                <asp:Button ID="btnDownload" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width:120px;" runat="server" Text="Download File" />
+            <div class="col-10" style="display: flex; align-items: end; justify-content: end;">
+                <asp:Button ID="btnExport" class="btn btn-secondary btn-sm" Style="width: 120px;" runat="server" Text="Export" OnClientClick="showWaitCursor()" />
+                <asp:Button ID="btnDownload" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" runat="server" Text="Download File" />
             </div>
         </div>
 

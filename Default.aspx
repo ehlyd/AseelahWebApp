@@ -9,11 +9,37 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        @media (min-width: 576px) {
+            .login {
+                width: 80%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .login {
+                width: 60%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .login {
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .login {
+                width: 50%;
+            }
+        }
+    </style>
 </head>
 <body style="background-color: #F5EFE7;">
     <form id="form1" runat="server">
         <div style="display: flex; justify-content: center; align-items: center; height: 70vh;">
-            <div class="container-sm" style="border: solid; border-width: thin; border-radius: 5px; padding: 30px; background-color: whitesmoke; width:40%;">
+            <div class="container login" style="border: solid; border-width: thin; border-radius: 5px; padding: 30px; background-color: whitesmoke;">
                 <div class="row">
 
                     <div class="col-4">

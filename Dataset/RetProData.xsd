@@ -31,6 +31,7 @@
               <xs:element name="CREATED_BY" msprop:Generator_ColumnPropNameInTable="CREATED_BYColumn" msprop:Generator_ColumnPropNameInRow="CREATED_BY" msprop:Generator_UserColumnName="CREATED_BY" msprop:Generator_ColumnVarNameInTable="columnCREATED_BY" type="xs:string" minOccurs="0" />
               <xs:element name="EXPORTED_DATETIME" msprop:Generator_ColumnPropNameInTable="EXPORTED_DATETIMEColumn" msprop:Generator_ColumnPropNameInRow="EXPORTED_DATETIME" msprop:Generator_UserColumnName="EXPORTED_DATETIME" msprop:Generator_ColumnVarNameInTable="columnEXPORTED_DATETIME" type="xs:string" minOccurs="0" />
               <xs:element name="MODIFIED_DATETIME" msprop:Generator_ColumnPropNameInTable="MODIFIED_DATETIMEColumn" msprop:Generator_ColumnPropNameInRow="MODIFIED_DATETIME" msprop:Generator_UserColumnName="MODIFIED_DATETIME" msprop:Generator_ColumnVarNameInTable="columnMODIFIED_DATETIME" type="xs:string" minOccurs="0" />
+              <xs:element name="EBS_PI_NO" msprop:Generator_ColumnPropNameInRow="EBS_PI_NO" msprop:Generator_ColumnPropNameInTable="EBS_PI_NOColumn" msprop:Generator_ColumnVarNameInTable="columnEBS_PI_NO" msprop:Generator_UserColumnName="EBS_PI_NO" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -311,6 +311,8 @@ Partial Public Class RetProData
         
         Private columnMODIFIED_DATETIME As Global.System.Data.DataColumn
         
+        Private columnEBS_PI_NO As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -459,6 +461,14 @@ Partial Public Class RetProData
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property EBS_PI_NOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnEBS_PI_NO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -495,9 +505,9 @@ Partial Public Class RetProData
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddDataTable1Row(ByVal BRAND As String, ByVal STORE_CODE As String, ByVal STORE_NAME As String, ByVal PI_NAME As String, ByVal CREATED_DATE As String, ByVal POST_DATE As String, ByVal PI_STATUS As String, ByVal START_QTY As String, ByVal COUNTED_QTY As String, ByVal DIFFERENCES_QTY As String, ByVal DIFFERENCES_SALES_PRICE As String, ByVal CREATED_BY As String, ByVal EXPORTED_DATETIME As String, ByVal MODIFIED_DATETIME As String) As DataTable1Row
+        Public Overloads Function AddDataTable1Row(ByVal BRAND As String, ByVal STORE_CODE As String, ByVal STORE_NAME As String, ByVal PI_NAME As String, ByVal CREATED_DATE As String, ByVal POST_DATE As String, ByVal PI_STATUS As String, ByVal START_QTY As String, ByVal COUNTED_QTY As String, ByVal DIFFERENCES_QTY As String, ByVal DIFFERENCES_SALES_PRICE As String, ByVal CREATED_BY As String, ByVal EXPORTED_DATETIME As String, ByVal MODIFIED_DATETIME As String, ByVal EBS_PI_NO As String) As DataTable1Row
             Dim rowDataTable1Row As DataTable1Row = CType(Me.NewRow,DataTable1Row)
-            Dim columnValuesArray() As Object = New Object() {BRAND, STORE_CODE, STORE_NAME, PI_NAME, CREATED_DATE, POST_DATE, PI_STATUS, START_QTY, COUNTED_QTY, DIFFERENCES_QTY, DIFFERENCES_SALES_PRICE, CREATED_BY, EXPORTED_DATETIME, MODIFIED_DATETIME}
+            Dim columnValuesArray() As Object = New Object() {BRAND, STORE_CODE, STORE_NAME, PI_NAME, CREATED_DATE, POST_DATE, PI_STATUS, START_QTY, COUNTED_QTY, DIFFERENCES_QTY, DIFFERENCES_SALES_PRICE, CREATED_BY, EXPORTED_DATETIME, MODIFIED_DATETIME, EBS_PI_NO}
             rowDataTable1Row.ItemArray = columnValuesArray
             Me.Rows.Add(rowDataTable1Row)
             Return rowDataTable1Row
@@ -534,6 +544,7 @@ Partial Public Class RetProData
             Me.columnCREATED_BY = MyBase.Columns("CREATED_BY")
             Me.columnEXPORTED_DATETIME = MyBase.Columns("EXPORTED_DATETIME")
             Me.columnMODIFIED_DATETIME = MyBase.Columns("MODIFIED_DATETIME")
+            Me.columnEBS_PI_NO = MyBase.Columns("EBS_PI_NO")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -567,6 +578,8 @@ Partial Public Class RetProData
             MyBase.Columns.Add(Me.columnEXPORTED_DATETIME)
             Me.columnMODIFIED_DATETIME = New Global.System.Data.DataColumn("MODIFIED_DATETIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnMODIFIED_DATETIME)
+            Me.columnEBS_PI_NO = New Global.System.Data.DataColumn("EBS_PI_NO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnEBS_PI_NO)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -923,6 +936,21 @@ Partial Public Class RetProData
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property EBS_PI_NO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableDataTable1.EBS_PI_NOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'EBS_PI_NO' in table 'DataTable1' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableDataTable1.EBS_PI_NOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsBRANDNull() As Boolean
             Return Me.IsNull(Me.tableDataTable1.BRANDColumn)
         End Function
@@ -1087,6 +1115,18 @@ Partial Public Class RetProData
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetMODIFIED_DATETIMENull()
             Me(Me.tableDataTable1.MODIFIED_DATETIMEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsEBS_PI_NONull() As Boolean
+            Return Me.IsNull(Me.tableDataTable1.EBS_PI_NOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetEBS_PI_NONull()
+            Me(Me.tableDataTable1.EBS_PI_NOColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

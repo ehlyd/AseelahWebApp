@@ -29,7 +29,7 @@ Public Class PISummary
             Dim dt As DataTable
 
             mclsOra.OpenDB()
-            dt = mclsOra.GetDataSet("select sbs_no,sbs_name from rps.subsidiary where sbs_no not in(1,3,7) order by sbs_name").Tables(0)
+            dt = mclsOra.GetDataSet("select sbs_no,sbs_name from XXASH_SUBSIDIARY_V ORDER BY sbs_name").Tables(0)
 
             If dt.Rows.Count <> 0 Then
                 For Each dRow As DataRow In dt.Rows
@@ -51,15 +51,19 @@ Public Class PISummary
         Try
             Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
             Dim dt As DataTable
+            Dim strQuery As String
 
             mclsOra.OpenDB()
-            dt = mclsOra.GetDataSet("select store_code,store_name from rps.store where sbs_sid in
-                                    (select sid from rps.subsidiary where sbs_no='" & Session("sbs_no") & "') 
-                                    AND upper(store_name) NOT LIKE '%ONLINE%' AND upper(store_name) NOT LIKE '%HOUSE%'
-                                    AND upper(store_name) NOT LIKE '%STOCK%' AND upper(store_name) NOT LIKE '%REPLENISH%'
-                                    AND upper(store_name) NOT LIKE '%WH%' AND upper(store_name) NOT LIKE '%DEFAULT%'
-                                    and active=1
-                                    order by store_name").Tables(0)
+            strQuery = "select store_code,store_name from XXASH_STORE_V where sbs_no='" & Session("sbs_no") & "'"
+            dt = mclsOra.GetDataSet(strQuery).Tables(0)
+
+            'dt = mclsOra.GetDataSet("select store_code,store_name from rps.store where sbs_sid in
+            '                        (select sid from rps.subsidiary where sbs_no='" & Session("sbs_no") & "') 
+            '                        AND upper(store_name) NOT LIKE '%ONLINE%' AND upper(store_name) NOT LIKE '%HOUSE%'
+            '                        AND upper(store_name) NOT LIKE '%STOCK%' AND upper(store_name) NOT LIKE '%REPLENISH%'
+            '                        AND upper(store_name) NOT LIKE '%WH%' AND upper(store_name) NOT LIKE '%DEFAULT%'
+            '                        and active=1
+            '                        order by store_name").Tables(0)
 
             ddlStore.Items.Clear()
 
@@ -103,7 +107,7 @@ Public Class PISummary
             '            AND PIS.IN_PROGRESS<>3 AND (PST.QTY<>0 OR (NVL(PZQ.SCAN_QTY,0)+NVL(PZQ.IMPORTED_QTY,0)+NVL(PZQ.MANUAL_QTY,0)) <>0)
             '            ORDER BY TO_CHAR(PIS.CREATED_DATETIME,'YYYY-MM-DD') DESC"
 
-            strQuery = "SELECT PI_NAME,CREATED_DATE,START_QTY,COUNTED_QTY,DIFFERENCES_QTY,DIFFERENCES_SALES_PRICE,PI_STATUS
+            strQuery = "SELECT EBS_PI_NO,PI_NAME,CREATED_DATE,START_QTY,COUNTED_QTY,DIFFERENCES_QTY,DIFFERENCES_SALES_PRICE,PI_STATUS
                          FROM XXASH_PISUMMARY_V WHERE STORE_CODE='" & strStoreCode & "' and SBS_NO=" & strSBSNo & "  
                         ORDER BY CREATED_DATE DESC"
 
@@ -292,36 +296,38 @@ Public Class PISummary
             '    e.Row.Cells(7).HorizontalAlign = HorizontalAlign.Center
             'End If
 
-            If IsNumeric(e.Row.Cells(3).Text) Then
-                'e.Row.Cells(3).HorizontalAlign = HorizontalAlign.Right
-                e.Row.Cells(3).Text = Format(CDbl(e.Row.Cells(3).Text), "#,##0")
-            End If
             If IsNumeric(e.Row.Cells(4).Text) Then
-                'e.Row.Cells(4).HorizontalAlign = HorizontalAlign.Right
+                'e.Row.Cells(3).HorizontalAlign = HorizontalAlign.Right
                 e.Row.Cells(4).Text = Format(CDbl(e.Row.Cells(4).Text), "#,##0")
             End If
             If IsNumeric(e.Row.Cells(5).Text) Then
-                'e.Row.Cells(5).HorizontalAlign = HorizontalAlign.Right
+                'e.Row.Cells(4).HorizontalAlign = HorizontalAlign.Right
                 e.Row.Cells(5).Text = Format(CDbl(e.Row.Cells(5).Text), "#,##0")
             End If
             If IsNumeric(e.Row.Cells(6).Text) Then
-                'e.Row.Cells(6).HorizontalAlign = HorizontalAlign.Right
+                'e.Row.Cells(5).HorizontalAlign = HorizontalAlign.Right
                 e.Row.Cells(6).Text = Format(CDbl(e.Row.Cells(6).Text), "#,##0")
+            End If
+            If IsNumeric(e.Row.Cells(7).Text) Then
+                'e.Row.Cells(6).HorizontalAlign = HorizontalAlign.Right
+                e.Row.Cells(7).Text = Format(CDbl(e.Row.Cells(7).Text), "#,##0")
             End If
 
         ElseIf e.Row.RowType = DataControlRowType.Header Then
-            e.Row.Cells(1).Text = "PI Name"
+            e.Row.Cells(1).Text = "EBS PI#"
+
+            e.Row.Cells(2).Text = "PI Name"
             'e.Row.Cells(1).CssClass = "alignCenter"
 
-            e.Row.Cells(2).Text = "Created Date"
+            e.Row.Cells(3).Text = "Created Date"
             'e.Row.Cells(2).CssClass = "alignCenter"
 
-            e.Row.Cells(3).Text = "System Qty"
-            e.Row.Cells(4).Text = "Scanned Qty"
-            e.Row.Cells(5).Text = "Final Result + -"
-            e.Row.Cells(6).Text = "Diff. Selling Price"
+            e.Row.Cells(4).Text = "System Qty"
+            e.Row.Cells(5).Text = "Scanned Qty"
+            e.Row.Cells(6).Text = "Final Result + -"
+            e.Row.Cells(7).Text = "Diff. Selling Price"
 
-            e.Row.Cells(7).Text = "Status"
+            e.Row.Cells(8).Text = "Status"
             'e.Row.Cells(7).CssClass = "alignCenter"
 
             For i As Integer = 3 To 6
@@ -334,7 +340,7 @@ Public Class PISummary
 
     Private Sub gridViewPI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gridViewPI.SelectedIndexChanged
         Try
-            ShowCountReport(gridViewPI.SelectedRow.Cells(1).Text)
+            ShowCountReport(gridViewPI.SelectedRow.Cells(2).Text)
         Catch ex As Exception
             ShowMessageAlert(Me, ex.Message, "error")
         End Try
