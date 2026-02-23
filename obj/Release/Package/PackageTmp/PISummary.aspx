@@ -8,7 +8,7 @@
     <div class="container" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;">
         <h6 style="margin-top: 20px; margin-bottom: 20px;">PI Summary</h6>
         <hr />
-        
+
         <div class="row" style="width: 100%; margin-top: 20px;">
             <div class="col">
                 <asp:Label ID="Label1" class="form-label-sm" runat="server" Text="Subsidiary"></asp:Label>
@@ -44,6 +44,10 @@
         </div>
 
         <hr />
+
+<%--        <asp:Panel ID="pnlDownload" runat="server" Style="margin-bottom: 5px;" Visible="False">
+            <asp:LinkButton ID="lnkDownload" runat="server" OnClientClick="showWaitCursor()">Download PI Detail</asp:LinkButton>
+        </asp:Panel>--%>
 
         <div class="row" style="width: 100%;">
             <div class="col">

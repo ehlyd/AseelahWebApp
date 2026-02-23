@@ -23,6 +23,15 @@ Partial Public Class _Default
     Protected WithEvents imgBtnPI As Global.System.Web.UI.WebControls.ImageButton
 
     '''<summary>
+    '''imgBtnPIDetail control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnPIDetail As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
     '''imgBtnExportItems control.
     '''</summary>
     '''<remarks>
@@ -39,6 +48,15 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HyperLinkPISummary As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''HyperLinkPIDetail control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkPIDetail As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
     '''HyperLinkExportItem control.

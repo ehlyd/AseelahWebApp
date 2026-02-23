@@ -254,3 +254,7 @@ C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\obj\Debug\As
 C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\obj\Debug\AseelahWebApps.dll
 C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\obj\Debug\WebForms_Basic.xml
 C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\obj\Debug\AseelahWebApps.pdb
+C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\EPPlus.dll
+C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\EPPlus.Interfaces.dll
+C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\EPPlus.System.Drawing.dll
+C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\EPPlus.xml

@@ -1,6 +1,7 @@
 ﻿
 Imports System.Xml
 Imports Microsoft.Reporting.WebForms
+Imports Oracle.ManagedDataAccess.Client
 
 Public Class PISummary
     Inherits System.Web.UI.Page
@@ -54,16 +55,8 @@ Public Class PISummary
             Dim strQuery As String
 
             mclsOra.OpenDB()
-            strQuery = "select store_code,store_name from XXASH_STORE_V where sbs_no='" & Session("sbs_no") & "'"
+            strQuery = "select store_code,store_name from XXASH_STORE_V where sbs_no='" & Session("sbs_no") & "' and active=1"
             dt = mclsOra.GetDataSet(strQuery).Tables(0)
-
-            'dt = mclsOra.GetDataSet("select store_code,store_name from rps.store where sbs_sid in
-            '                        (select sid from rps.subsidiary where sbs_no='" & Session("sbs_no") & "') 
-            '                        AND upper(store_name) NOT LIKE '%ONLINE%' AND upper(store_name) NOT LIKE '%HOUSE%'
-            '                        AND upper(store_name) NOT LIKE '%STOCK%' AND upper(store_name) NOT LIKE '%REPLENISH%'
-            '                        AND upper(store_name) NOT LIKE '%WH%' AND upper(store_name) NOT LIKE '%DEFAULT%'
-            '                        and active=1
-            '                        order by store_name").Tables(0)
 
             ddlStore.Items.Clear()
 
@@ -172,60 +165,8 @@ Public Class PISummary
         End Try
     End Sub
 
-    'Protected Sub ShowMessageAlert(strMessage As String, strMessageType As String)
 
-    '    Dim script As String
 
-    '    Dim strMessageIcon As String = ""
-
-    '    Select Case strMessageType
-    '        Case "error"
-    '            strMessageIcon = "Error!"
-    '        Case "success"
-    '            strMessageIcon = "Success!"
-    '        Case "warning"
-    '            strMessageIcon = "Warning!"
-    '        Case "info"
-    '            strMessageIcon = "Info!"
-    '        Case "question"
-    '            strMessageIcon = "Question!"
-    '    End Select
-
-    '    strMessage = Replace(strMessage, "'", "")
-
-    '    If strMessageType <> "question" Then
-    '        script = $"<script>Swal.fire('{strMessageIcon}', '{strMessage}', '{strMessageType}');</script>"
-
-    '        ClientScript.RegisterStartupScript(Me.GetType(), "showSweetAlert", script)
-
-    '    Else
-
-    '        'WaitCursor()
-
-    '        Dim yesPostBackScript As String = ClientScript.GetPostBackEventReference(Me, "YesClicked")
-    '        Dim noPostBackScript As String = ClientScript.GetPostBackEventReference(Me, "NoClicked")
-
-    '        script = $"<script>
-    '        Swal.fire({{
-    '            title: 'Confirmation',
-    '            text: '{strMessage}',
-    '            icon: 'question',
-    '            showCancelButton: true,
-    '            confirmButtonText: 'Yes',
-    '            cancelButtonText: 'No'
-    '        }}).then((result) => {{
-    '             if (result.isConfirmed) {{
-    '                {yesPostBackScript};
-    '             }} else if (result.dismiss === Swal.DismissReason.cancel) {{
-    '                {noPostBackScript};
-    '             }}
-    '        }})</script>"
-    '        ClientScript.RegisterStartupScript(Me.GetType(), "showConfirmationAlert", script)
-
-    '    End If
-    'End Sub
-
-    'Protected Sub btnPISummary_Click(sender As Object, e As EventArgs) Handles btnPISummary.Click
     Private Sub ShowCountReport(strPIName As String)
 
         Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
@@ -284,6 +225,7 @@ Public Class PISummary
             Dim selectButton As LinkButton = TryCast(e.Row.Cells(0).Controls(0), LinkButton)
             If selectButton IsNot Nothing Then
                 selectButton.Text = "Show Count Form"
+                selectButton.OnClientClick = "showWaitCursor();"
             End If
 
             'If IsNumeric(e.Row.Cells(1).Text) Then
@@ -313,6 +255,7 @@ Public Class PISummary
                 e.Row.Cells(7).Text = Format(CDbl(e.Row.Cells(7).Text), "#,##0")
             End If
 
+
         ElseIf e.Row.RowType = DataControlRowType.Header Then
             e.Row.Cells(1).Text = "EBS PI#"
 
@@ -328,6 +271,7 @@ Public Class PISummary
             e.Row.Cells(7).Text = "Diff. Selling Price"
 
             e.Row.Cells(8).Text = "Status"
+
             'e.Row.Cells(7).CssClass = "alignCenter"
 
             For i As Integer = 3 To 6
@@ -341,8 +285,10 @@ Public Class PISummary
     Private Sub gridViewPI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gridViewPI.SelectedIndexChanged
         Try
             ShowCountReport(gridViewPI.SelectedRow.Cells(2).Text)
+
         Catch ex As Exception
             ShowMessageAlert(Me, ex.Message, "error")
         End Try
     End Sub
+
 End Class

@@ -181,6 +181,15 @@ Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
+<member name="F:AseelahWebApps._Default._imgBtnPIDetail">
+<summary>
+imgBtnPIDetail control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
 <member name="F:AseelahWebApps._Default._imgBtnExportItems">
 <summary>
 imgBtnExportItems control.
@@ -193,6 +202,15 @@ To modify move field declaration from designer file to code-behind file.
 <member name="F:AseelahWebApps._Default._HyperLinkPISummary">
 <summary>
 HyperLinkPISummary control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps._Default._HyperLinkPIDetail">
+<summary>
+HyperLinkPIDetail control.
 </summary>
 <remarks>
 Auto-generated field.
@@ -265,6 +283,60 @@ To modify move field declaration from designer file to code-behind file.
 <member name="F:AseelahWebApps.Login2._btnLogin">
 <summary>
 btnLogin control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._Panel1">
+<summary>
+Panel1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._Label1">
+<summary>
+Label1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._ddlSubsidiary">
+<summary>
+ddlSubsidiary control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._Label2">
+<summary>
+Label2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._ddlStore">
+<summary>
+ddlStore control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.PIDetails._gridViewPI">
+<summary>
+gridViewPI control.
 </summary>
 <remarks>
 Auto-generated field.

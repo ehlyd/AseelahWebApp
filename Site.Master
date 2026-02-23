@@ -98,11 +98,34 @@
             function showWaitCursor() {
                 //document.body.style.cursor = 'wait';
                 document.documentElement.style.cursor = 'wait';
+
+                // Start polling for the cookie every 500ms
+                downloadTimer = window.setInterval(function () {
+                    var cookieValue = getCookie("downloadStarted");
+                    if (cookieValue === "true") {
+                        finishDownload();
+                    }
+                }, 500);
+            }
+
+            function finishDownload() {
+                // Clear the timer
+                window.clearInterval(downloadTimer);
+                // Expire the cookie immediately
+                document.cookie = "downloadStarted=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                // Reset cursor
+                defaultCursor();
             }
 
             function defaultCursor() {
                 //document.body.style.cursor = 'default';
                 document.documentElement.style.cursor = 'default';
+            }
+
+            // Helper to read the cookie
+            function getCookie(name) {
+                var parts = document.cookie.split(name + "=");
+                if (parts.length == 2) return parts.pop().split(";").shift();
             }
 
         </script>

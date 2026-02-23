@@ -115,6 +115,91 @@ Public Class clsOracleDB
         End Try
     End Sub
 
+    Public Function GetInventoryReport() As DataTable
+        Dim dt As New DataTable("InventoryDetails")
+
+        ' Update with your actual connection string details
+        Dim connString As String = "User Id=<User>;Password=<Password>;Data Source=<Host>:<Port>/<ServiceName>;"
+
+        Using conn As New OracleConnection(connString)
+            Using cmd As New OracleCommand("REPORTUSER.XXASH_INV_DETAIL_DT_RPT", conn)
+                cmd.CommandType = CommandType.StoredProcedure
+
+                ' 1. Add Input Parameters
+                cmd.Parameters.Add("p_StoreCode", OracleDbType.Varchar2).Value = "IP10"
+                cmd.Parameters.Add("p_PiSID", OracleDbType.Varchar2).Value = "753441701100091976"
+
+                ' 2. Add Output RefCursor Parameter (This maps to :results)
+                Dim refCursor As New OracleParameter()
+                refCursor.ParameterName = "p_InvDetail"
+                refCursor.OracleDbType = OracleDbType.RefCursor
+                refCursor.Direction = ParameterDirection.Output
+                cmd.Parameters.Add(refCursor)
+
+                Try
+                    conn.Open()
+
+                    ' 3. Use an OracleDataAdapter to fill the DataTable
+                    Using da As New OracleDataAdapter(cmd)
+                        da.Fill(dt)
+                    End Using
+
+                Catch ex As Exception
+                    ' Handle exceptions (logging, re-throwing, etc.)
+                    Console.WriteLine("Error: " & ex.Message)
+                End Try
+            End Using
+        End Using
+
+        Return dt
+    End Function
+
+    Public Function GetDatatableSP(ByVal strSPName As String, ByVal paramName() As String, ByVal paramDBType() As OracleDbType, ByVal paramValue() As String, outputParam As String) As DataTable
+        Try
+
+            oraCMD = New OracleCommand
+
+            Dim oParam As OracleParameter
+
+            With oraCMD
+                .Connection = oraCN
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = strSPName
+                .CommandTimeout = 120
+
+                If Not paramName Is Nothing Then
+                    For i As Integer = 0 To paramName.Length - 1
+
+                        oParam = New OracleParameter(paramName(i), paramDBType(i))
+                        oParam.Value = paramValue(i)
+                        oParam.Direction = ParameterDirection.Input
+                        oraCMD.Parameters.Add(oParam)
+                        oParam = Nothing
+
+                    Next
+
+                    Dim refCursor As New OracleParameter()
+                    refCursor.ParameterName = outputParam
+                    refCursor.OracleDbType = OracleDbType.RefCursor
+                    refCursor.Direction = ParameterDirection.Output
+                    oraCMD.Parameters.Add(refCursor)
+
+                End If
+
+                Dim sqlDA As New OracleDataAdapter, ds As New DataSet
+
+                sqlDA.SelectCommand = oraCMD
+                sqlDA.Fill(ds)
+
+                Return ds.Tables(0)
+
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function
+
 
     Public Function GetDataSet(ByVal strSQLQuery As String) As DataSet
         Try

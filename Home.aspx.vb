@@ -24,9 +24,19 @@ Public Class _Default
         Response.Redirect("PISummary.aspx")
     End Sub
 
+    Protected Sub imgBtnPIDetail_Click(sender As Object, e As ImageClickEventArgs) Handles imgBtnPIDetail.Click
+        Response.Redirect("PIDetails.aspx")
+    End Sub
     Private Sub HideAllMenu()
         imgBtnPI.Visible = False
         HyperLinkPISummary.Visible = False
+
+        imgBtnExportItems.Visible = False
+        HyperLinkExportItem.Visible = False
+
+        imgBtnPIDetail.Visible = False
+        HyperLinkPIDetail.Visible = False
+
         'imBtnGroupAccess.Visible = False
         'HyperLinkGroupAccess.Visible = False
     End Sub
@@ -49,12 +59,17 @@ Public Class _Default
 
                 For Each dRow As DataRow In dt.Rows
 
-                    Select Case dRow.Item(0).ToString
+                    Select Case UCase(dRow.Item(0).ToString)
 
                         Case "PI SUMMARY"
 
                             imgBtnPI.Visible = True
                             HyperLinkPISummary.Visible = True
+
+                        Case "PI DETAIL"
+
+                            imgBtnPIDetail.Visible = True
+                            HyperLinkPIDetail.Visible = True
 
                         Case "EXPORT ITEMS"
                             imgBtnExportItems.Visible = True
@@ -145,6 +160,9 @@ Public Class _Default
 
         End If
     End Sub
+
+
+
 
     'Private Sub imBtnGroupAccess_Click(sender As Object, e As ImageClickEventArgs) Handles imBtnGroupAccess.Click
     '    Response.Redirect("GroupAccess.aspx")

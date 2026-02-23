@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2025-12-09T06:27:49.4941836Z||;True|2025-12-02T10:17:47.0639361+03:00||;True|2025-12-02T10:07:27.4526123+03:00||;True|2025-11-06T15:47:55.4492423+03:00||;True|2025-11-06T15:43:38.8219949+03:00||;True|2025-09-17T11:27:27.3952052+03:00||;True|2025-09-17T11:22:54.2212215+03:00||;True|2025-09-17T11:21:03.0641543+03:00||;</History>
+    <History>True|2026-02-01T09:14:51.4437600Z||;True|2026-01-08T13:15:12.4914672+03:00||;True|2025-12-09T09:27:49.4941836+03:00||;True|2025-12-02T10:17:47.0639361+03:00||;True|2025-12-02T10:07:27.4526123+03:00||;True|2025-11-06T15:47:55.4492423+03:00||;True|2025-11-06T15:43:38.8219949+03:00||;True|2025-09-17T11:27:27.3952052+03:00||;True|2025-09-17T11:22:54.2212215+03:00||;True|2025-09-17T11:21:03.0641543+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -17,10 +17,10 @@
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.dll">
-      <publishTime>12/09/2025 09:27:47</publishTime>
+      <publishTime>02/02/2026 11:30:48</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.pdb">
-      <publishTime>12/09/2025 09:27:47</publishTime>
+      <publishTime>02/02/2026 11:30:48</publishTime>
     </File>
     <File Include="bin/de/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -42,6 +42,15 @@
     </File>
     <File Include="bin/EnvDTE.dll">
       <publishTime>10/22/2009 19:51:18</publishTime>
+    </File>
+    <File Include="bin/EPPlus.dll">
+      <publishTime>03/04/2025 16:51:30</publishTime>
+    </File>
+    <File Include="bin/EPPlus.Interfaces.dll">
+      <publishTime>03/04/2025 16:51:48</publishTime>
+    </File>
+    <File Include="bin/EPPlus.System.Drawing.dll">
+      <publishTime>03/04/2025 16:52:06</publishTime>
     </File>
     <File Include="bin/es/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -317,7 +326,7 @@
       <publishTime>02/11/2014 15:26:04</publishTime>
     </File>
     <File Include="bin/WebForms_Basic.xml">
-      <publishTime>12/09/2025 09:27:47</publishTime>
+      <publishTime>02/02/2026 11:30:48</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
@@ -488,7 +497,7 @@
       <publishTime>11/06/2025 12:06:36</publishTime>
     </File>
     <File Include="Home.aspx">
-      <publishTime>11/06/2025 12:06:36</publishTime>
+      <publishTime>02/01/2026 12:21:37</publishTime>
     </File>
     <File Include="images/access-control.png">
       <publishTime>11/06/2025 12:06:37</publishTime>
@@ -502,8 +511,14 @@
     <File Include="images/inventory.png">
       <publishTime>11/06/2025 12:06:37</publishTime>
     </File>
+    <File Include="images/inventory_detail.png">
+      <publishTime>01/22/2026 11:02:16</publishTime>
+    </File>
+    <File Include="PIDetails.aspx">
+      <publishTime>01/29/2026 12:11:34</publishTime>
+    </File>
     <File Include="PISummary.aspx">
-      <publishTime>11/06/2025 12:06:36</publishTime>
+      <publishTime>01/26/2026 09:15:25</publishTime>
     </File>
     <File Include="ReportForms/PISummaryReport.aspx">
       <publishTime>11/06/2025 12:06:36</publishTime>
@@ -629,7 +644,7 @@
       <publishTime>11/06/2025 12:06:37</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>11/06/2025 12:06:37</publishTime>
+      <publishTime>01/25/2026 14:51:07</publishTime>
     </File>
     <File Include="SqlServerTypes/Loader.cs">
       <publishTime>11/06/2025 12:06:37</publishTime>
@@ -656,7 +671,7 @@
       <publishTime>11/06/2025 12:06:37</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/06/2025 15:43:27</publishTime>
+      <publishTime>02/01/2026 12:14:50</publishTime>
     </File>
   </ItemGroup>
 </Project>
