@@ -6,9 +6,9 @@ Public Class PIDetails
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            If Session("AuthSession") Is Nothing Then
-                Response.Redirect("Default.aspx")
-            End If
+            'If Session("AuthSession") Is Nothing Then
+            '    Response.Redirect("Default.aspx")
+            'End If
 
             If Not IsPostBack Then
 

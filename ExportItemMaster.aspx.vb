@@ -14,7 +14,7 @@
 
     Private Sub FillOrganizationDropDown()
         Try
-            Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            Dim mclsOra As New clsOracleDB("EBSCloud_STG_OracleConnection")
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -48,7 +48,7 @@
     Private Sub CreateTextFile()
         Try
 
-            Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            Dim mclsOra As New clsOracleDB("EBSCloud_STG_OracleConnection")
             Dim dtExport As DataTable
             Dim strQuery As String
 

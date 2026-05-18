@@ -11,86 +11,95 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class SiteMaster
+Partial Public Class ChangePswrd
 
     '''<summary>
-    '''liInventory control.
+    '''Label5 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents liInventory As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''PISummary control.
+    '''txtChangeUserID control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents PISummary As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents txtChangeUserID As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''ExportItemMaster control.
+    '''Label6 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ExportItemMaster As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''liSales control.
+    '''txtChangeOldPswrd control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents liSales As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents txtChangeOldPswrd As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''OnlineSalesComp control.
+    '''Label7 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents OnlineSalesComp As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''liSecurity control.
+    '''txtChangeNewPswrd control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents liSecurity As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents txtChangeNewPswrd As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''liUserDropdown control.
+    '''Label8 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents liUserDropdown As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Label8 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblUsername control.
+    '''txtChangeConfirmPswrd control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblUsername As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents txtChangeConfirmPswrd As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''MainContent control.
+    '''btnChangePswrdSubmit control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MainContent As Global.System.Web.UI.WebControls.ContentPlaceHolder
+    Protected WithEvents btnChangePswrdSubmit As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnChangeCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnChangeCancel As Global.System.Web.UI.WebControls.Button
 End Class

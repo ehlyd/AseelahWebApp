@@ -11,16 +11,7 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class PISummary
-
-    '''<summary>
-    '''Panel1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Panel1 As Global.System.Web.UI.WebControls.Panel
+Partial Public Class UserGroup
 
     '''<summary>
     '''Label1 control.
@@ -32,13 +23,13 @@ Partial Public Class PISummary
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''ddlSubsidiary control.
+    '''txtGroupID control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlSubsidiary As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents txtGroupID As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''Label2 control.
@@ -50,29 +41,29 @@ Partial Public Class PISummary
     Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''ddlStore control.
+    '''txtGroupName control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlStore As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents txtGroupName As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''gridViewPI control.
+    '''btnSave control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents gridViewPI As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''ReportViewer1 control.
+    '''btnClose control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ReportViewer1 As Global.Microsoft.Reporting.WebForms.ReportViewer
+    Protected WithEvents btnClose As Global.System.Web.UI.WebControls.Button
 End Class
