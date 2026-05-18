@@ -45,6 +45,14 @@ Public Class clsSQLDB
         End Try
     End Sub
 
+    'Public Function IsDBOpen() As Boolean
+    '    If sqlCN.State = ConnectionState.Open Then
+    '        Return True
+    '    Else
+    '        Return False
+    '    End If
+    'End Function
+
     Public Sub ExecuteNonQuery(ByVal strSQLQuery As String)
         Try
             sqlCMD = New SqlCommand
