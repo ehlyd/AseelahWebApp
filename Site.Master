@@ -216,9 +216,6 @@
                         clearInterval(idleInterval);
                         $(document).off('mousemove keypress mousedown touchstart scroll'); // Stop listening
 
-                        var pagePath = window.location.pathname;
-
-                        // Trigger sweet alert message
                         Swal.fire({
                             title: 'Session Expired',
                             text: 'You have been inactive for 10 minutes. You will be redirected to the login page.',

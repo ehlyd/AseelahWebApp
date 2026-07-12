@@ -25,6 +25,15 @@ Public Class SiteMaster
         End If
     End Sub
 
+    <WebMethod(EnableSession:=True)>
+    Public Shared Sub KillSession()
+        ' Explicitly clear your authentication session variable
+        If HttpContext.Current.Session IsNot Nothing Then
+            HttpContext.Current.Session("AuthSession") = Nothing
+            HttpContext.Current.Session.Abandon()
+        End If
+    End Sub
+
     Public Sub SetSecurityVisible(show As Boolean)
         liSecurity.Visible = show
     End Sub

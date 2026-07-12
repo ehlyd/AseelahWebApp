@@ -241,17 +241,33 @@ Public Class clsOracleDB
             Next
 
 
-            ' Loop through each data row and execute insert statement
+            '' Loop through each data row and execute insert statement
+            'For rowIndex As Integer = 0 To dataTable.Rows.Count - 1
+            '    ' Set parameter values for each cell in the current row
+            '    For colIndex As Integer = 0 To dataTable.Columns.Count - 1
+            '        sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+            '    Next
+
+            '    sqlCommand.ExecuteNonQuery()
+            'Next
+
             For rowIndex As Integer = 0 To dataTable.Rows.Count - 1
                 ' Set parameter values for each cell in the current row
                 For colIndex As Integer = 0 To dataTable.Columns.Count - 1
-                    sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+                    If dataTable.Columns(colIndex).ColumnName.ToUpper.Contains("DATE") Then
+                        If dataTable.Rows(rowIndex).Item(colIndex).ToString = "" Then
+                            sqlCommand.Parameters(colIndex).Value = DBNull.Value
+                        Else
+                            sqlCommand.Parameters(colIndex).Value = Format(CDate(dataTable.Rows(rowIndex).Item(colIndex)), "dd-MMM-yyyy hh:mm:ss tt")
+                        End If
+                    Else
+                        sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+                    End If
                 Next
 
                 sqlCommand.ExecuteNonQuery()
             Next
 
-            'Console.WriteLine("Data imported successfully to table: " & tableName)
         Catch ex As Exception
             Throw ex
             'Finally

@@ -27,8 +27,7 @@
         }
     </style>
 
-    <br />
-    <div class="container exportItems" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke; margin-left: 10%;">
+    <div class="container exportItems" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;">
         <h6 style="margin-top: 20px; margin-bottom: 20px;">Export Item Master</h6>
         <hr />
 

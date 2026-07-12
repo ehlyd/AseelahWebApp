@@ -1,8 +1,35 @@
 ﻿<%@ Page Title="Group Access" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="GroupAccess.aspx.vb" Inherits="AseelahWebApps.GroupAccess" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style>
+    @media (min-width: 576px) {
+        .GroupAccess {
+            width: 80%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .GroupAccess {
+            width: 60%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .GroupAccess {
+            width: 40%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .GroupAccess {
+            width: 40%;
+        }
+    }
+</style>
+
     <br />
-    <div class="container" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;">
+    <div class="container GroupAccess" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;  margin-left: 10%;">
         <h6 style="margin-top: 20px; margin-bottom: 20px;">Group Access</h6>
         <hr />
     
@@ -53,12 +80,12 @@
                 </asp:GridView>
             </div>
         </div>
+        <hr />
         <div class="row" style="margin-top: 20px; margin-left:0px; width:100%;">
-            <div class="col-6">
-                
+            <div class="col-6">                
             </div>
             <div class="col-6" style="display:flex; justify-content:flex-end;">
-                <asp:Button ID="btnSave" Class="btn btn-secondary btn-sm" runat="server" Text="Save" Style="margin-right: 10px; width: 80px;" OnClick="btnSave_Click" OnClientClick="isPostBack = true;"/>
+                <asp:Button ID="btnSave" Class="btn btn-success btn-sm" runat="server" Text="Save" Style="margin-right: 10px; width: 80px;" OnClick="btnSave_Click" OnClientClick="isPostBack = true;"/>
                 <asp:Button ID="btnCancel" Class="btn btn-secondary btn-sm" runat="server" Text="Cancel" Style="width: 80px;" OnClick="btnCancel_Click" OnClientClick="isPostBack = true;"/>
             </div>
         </div>

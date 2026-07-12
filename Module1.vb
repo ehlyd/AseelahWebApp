@@ -587,8 +587,8 @@ Module Module1
                 ' Highlight columns Z to AI (columns 26 to 35) with light green
                 ' include header (row 1), all data rows and the total row
                 Dim lightBlue As Color = ColorTranslator.FromHtml("#DAF2D0")
-                Dim startCol As Integer = 26 ' Z
-                Dim endCol As Integer = 35   ' AI
+                Dim startCol As Integer = 24 ' X
+                Dim endCol As Integer = 34   ' AH
                 Dim highlightFromRow As Integer = 4
                 Dim highlightToRow As Integer = lastRow + 2  ' include totals row
 
@@ -613,5 +613,37 @@ Module Module1
             Throw ex
         End Try
     End Sub
+
+    Public Function CreateTempTable_XXASH_TMPIPKECOM() As String
+        Return "CREATE TABLE XXASH_TMPIPKECOM
+                (
+                  ORDER_ID            NUMBER,
+                  ORDER_NAME          VARCHAR2(10 BYTE),
+                  ORDER_DATE          TIMESTAMP(6),
+                  SKU                 VARCHAR2(30 BYTE),
+                  VARIANT_TITLE       VARCHAR2(30 BYTE),
+                  QUANTITY            NUMBER,
+                  PRICE               NUMBER,
+                  LINE_TOTAL          NUMBER,
+                  FULFILLMENT_DATE    TIMESTAMP(6),
+                  FULFILLMENT_STATUS  VARCHAR2(20 BYTE),
+                  RETURN_DATE         TIMESTAMP(6),
+                  RETURN_QTY          NUMBER,
+                  RETURN_TYPE         VARCHAR2(20 BYTE),
+                  REFUND_DATE         TIMESTAMP(6),
+                  REFUNDED_QTY        NUMBER,
+                  REFUND_AMOUNT       NUMBER,
+                  ITEM_STATUS         VARCHAR2(30 BYTE),
+                  ITEM_RETURNED       VARCHAR2(10 BYTE),
+                  NET_QTY             NUMBER,
+                  NET_AMOUNT          NUMBER,
+                  NET_AMOUNT_US       NUMBER,
+                  KUR_SAR_USD         NUMBER,
+                  ORDER_STATUS        VARCHAR2(30 BYTE),
+                  CANCEL_DATE         TIMESTAMP(6),
+                  CANCEL_REASON       VARCHAR2(30 BYTE),
+                  RUN_ID              VARCHAR2(100 BYTE)
+                )"
+    End Function
 
 End Module

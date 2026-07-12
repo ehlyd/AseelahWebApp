@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.Net
 Imports System.Windows.Documents.Serialization
+Imports System.Windows.Media
 Imports AseelahWebApps.clsShopifyJsonOrders
 Imports Oracle.ManagedDataAccess.Client
 
@@ -17,8 +18,9 @@ Public Class OnlineSalesComparison
             If Not IsPostBack Then
                 FillSubsidiary()
 
-                txtFromDate.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")
+                txtFromDate.Text = DateTime.Now.AddDays(-60).ToString("yyyy-MM-dd")
                 txtToDate.Text = DateTime.Now.ToString("yyyy-MM-dd")
+
             End If
         Catch ex As Exception
             ShowMessageAlert(Me, ex.Message, "error")
@@ -82,12 +84,22 @@ Public Class OnlineSalesComparison
             Session("sbs_no") = Mid(ddlSubsidiary.SelectedValue, 1, InStr(ddlSubsidiary.SelectedValue, "-") - 1)
 
             FillStore()
+
+            If Session("sbs_no") = "2" Then
+                pnlSearch.Visible = False
+                gvOrderDetail.Visible = False
+                ipkaddnote.Visible = False
+            Else
+                pnlSearch.Visible = True
+                gvOrderDetail.Visible = True
+                ipkaddnote.Visible = True
+            End If
         Catch ex As Exception
             ShowMessageAlert(Me, ex.Message, "error")
         End Try
     End Sub
 
-    Protected Sub btnDownload_Click(sender As Object, e As EventArgs)
+    Protected Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
         Try
             Dim strStoreCode As String = Session("store_code")
 
@@ -175,21 +187,111 @@ Public Class OnlineSalesComparison
             Dim strShopifyURL As String = ConfigurationManager.AppSettings("IpekyolShopify_URL")
             Dim strShopifyToken As String = ConfigurationManager.AppSettings("IpekyolShopify_AccessToken")
 
-            ds = mclsAPI.DownloadOrders(strFromDate, strtoDate, strShopifyToken, strShopifyURL)
+            '=====================================================
+            ' normalize date boundaries
+            Dim overallStart As Date = CDate(txtFromDate.Text.Trim())
+            Dim overallEnd As Date = CDate(txtToDate.Text.Trim())
 
-            dtOrders = ds.Tables(0)
-            dtLineItems = ds.Tables(1)
-            dtRefunds = ds.Tables(2)
-            dtRefundLineItems = ds.Tables(3)
-            dtRefundTransactions = ds.Tables(4)
-            dtFulfillments = ds.Tables(5)
+            ' batch window: 20 days per request (keeps existing behaviour but ensures final day is included)
+            Dim batchStart As Date = overallStart
+            Dim batchEnd As Date = DateAdd(DateInterval.Day, 20, batchStart)
+
+            While batchStart <= overallEnd
+
+                ' cap batchEnd to the overall requested end date
+                If batchEnd > overallEnd Then
+                    batchEnd = overallEnd
+                End If
+
+                ' build API args
+                Dim apiFrom As String = Format(batchStart, "yyyy-MM-dd") & "T00:00:00Z"
+                Dim apiTo As String = Format(batchEnd, "yyyy-MM-dd") & "T23:59:59Z"
+
+                ds = mclsAPI.DownloadOrders(apiFrom, apiTo, strShopifyToken, strShopifyURL)
+
+                If batchStart = overallStart Then
+                    dtOrders = ds.Tables(0).Copy()
+                    dtLineItems = ds.Tables(1).Copy()
+                    dtRefunds = ds.Tables(2).Copy()
+                    dtRefundLineItems = ds.Tables(3).Copy()
+                    dtRefundTransactions = ds.Tables(4).Copy()
+                    dtFulfillments = ds.Tables(5).Copy()
+                Else
+                    dtOrders.Merge(ds.Tables(0))
+                    dtLineItems.Merge(ds.Tables(1))
+                    dtRefunds.Merge(ds.Tables(2))
+                    dtRefundLineItems.Merge(ds.Tables(3))
+                    dtRefundTransactions.Merge(ds.Tables(4))
+                    dtFulfillments.Merge(ds.Tables(5))
+                End If
+
+                ' advance to the next batch (day after current batchEnd)
+                batchStart = DateAdd(DateInterval.Day, 1, batchEnd)
+                batchEnd = DateAdd(DateInterval.Day, 20, batchStart)
+
+            End While
+            '=====================================================
+
+            'ds = mclsAPI.DownloadOrders(strFromDate, strtoDate, strShopifyToken, strShopifyURL)
+            'dtOrders = ds.Tables(0)
+            'dtLineItems = ds.Tables(1)
+            'dtRefunds = ds.Tables(2)
+            'dtRefundLineItems = ds.Tables(3)
+            'dtRefundTransactions = ds.Tables(4)
+            'dtFulfillments = ds.Tables(5)
 
             dtRefundLineItemsComp = BuildRefundLineItemsComp()
 
             Dim dtShopify As DataTable = BuildShopifyReportTable()
 
+
+            If dtShopify.Rows.Count <> 0 Then
+                SaveIpekyoltoDB(dtShopify.Copy)
+            End If
+
+            Dim minOrderDate As DateTime
+            If dtShopify.Rows.Count <> 0 Then
+
+                'minOrderDate = CDate(dtShopify.Compute("MIN(order_date)", ""))
+
+                '================================
+                ' Compute minimum order_date robustly because order_date is stored as string.
+                Dim minDt As Nullable(Of DateTime) = Nothing
+                Dim formats() As String = {"yyyy-MM-ddTHH:mm:ssZ", "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"}
+                For Each r As DataRow In dtShopify.Rows
+                    Dim s As String = TryCast(r("order_date"), String)
+                    If Not String.IsNullOrWhiteSpace(s) Then
+                        Dim parsed As DateTime
+                        If DateTime.TryParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal Or DateTimeStyles.AdjustToUniversal, parsed) _
+                           OrElse DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal Or DateTimeStyles.AdjustToUniversal, parsed) Then
+                            If Not minDt.HasValue OrElse parsed < minDt.Value Then
+                                minDt = parsed
+                            End If
+                        End If
+                    End If
+                Next
+
+                If minDt.HasValue Then
+                    minOrderDate = minDt.Value
+                Else
+                    ' No parsable dates found — fallback to txtFromDate to avoid exceptions
+                    minOrderDate = CDate(txtFromDate.Text)
+                End If
+                '================================
+
+                If Format(CDate(strFromDate), "yyyy-MM-dd") <> Format(minOrderDate, "yyyy-MM-dd") Then
+                    AddMissingOrders(dtShopify, CDate(strFromDate), DateAdd(DateInterval.Day, -1, minOrderDate))
+                End If
+            Else
+                AddMissingOrders(dtShopify, CDate(txtFromDate.Text), CDate(txtToDate.Text))
+            End If
+
+
             Dim dtRetailPRO As DataTable = GetRetailPRO_IpekyolOnlineSales()
-            Dim dtFinal As DataTable = JoinIpekyolandRetailPROTables(dtShopify, dtRetailPRO)
+
+            Dim dtIPKOrderNotes As DataTable = GetIpekyolOrderNotes()
+
+            Dim dtFinal As DataTable = JoinIpekyolandRetailPROTables(dtShopify, dtRetailPRO, dtIPKOrderNotes)
 
             Dim strFilename As String = "Ipekyol Shopify orders vs Retail PRO - " & Format(Now, "yyyyMMdd_hhmmsstt") & ".xlsx"
             If dtFinal.Rows.Count <> 0 Then
@@ -211,10 +313,94 @@ Public Class OnlineSalesComparison
                 Response.Flush()
                 Response.End()
 
+            Else
+                ShowMessageAlert(Me, "Orders were not found in Shopify API for the date specified.", "info")
             End If
 
         Catch ex As Exception
             Throw ex
+        End Try
+    End Sub
+
+    Private Function GetIpekyolOrderNotes() As DataTable
+        Try
+            Dim dt As DataTable, strQuery As String = ""
+            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            mclsOra.OpenDB()
+            strQuery = "select * from XXASH_IPK_SHOPIFY_NOTES"
+            dt = mclsOra.GetDataSet(strQuery).Tables(0)
+            mclsOra.CloseDB()
+
+            Return dt
+
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "Error")
+        End Try
+    End Function
+
+    Private Sub SaveIpekyoltoDB(dtIPK As DataTable)
+        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Try
+            Dim strQuery As String = ""
+            mclsOra.OpenDB()
+            strQuery = "select table_name from all_tables where table_name='XXASH_TMPIPKECOM'"
+            Dim dt As DataTable = mclsOra.GetDataSet(strQuery).Tables(0)
+            If dt.Rows.Count = 0 Then
+                mclsOra.ExecuteNonQuery(CreateTempTable_XXASH_TMPIPKECOM)
+            End If
+
+            Dim RunID As String = System.Guid.NewGuid().ToString()
+            dtIPK.Columns.Add("RUN_ID", GetType(String))
+            For Each row As DataRow In dtIPK.Rows
+                row("RUN_ID") = RunID
+            Next
+
+            mclsOra.BulkInsert("XXASH_TMPIPKECOM", dtIPK)
+
+            mclsOra.ExecuteNonQuery("DELETE FROM XXASH_IPK_SHOPIFY_ORDERS WHERE ORDER_ID IN
+                                    (SELECT DISTINCT ORDER_ID FROM XXASH_TMPIPKECOM WHERE RUN_ID='" & RunID & "')")
+
+            strQuery = "INSERT INTO XXASH_IPK_SHOPIFY_ORDERS(ORDER_ID,ORDER_NAME,ORDER_DATE,SKU,VARIANT_TITLE,QUANTITY,PRICE,LINE_TOTAL,FULFILLMENT_DATE,FULFILLMENT_STATUS,RETURN_DATE,
+                                                    RETURN_QTY,RETURN_TYPE,REFUND_DATE,REFUNDED_QTY,REFUND_AMOUNT,ITEM_STATUS,ITEM_RETURNED,NET_QTY,NET_AMOUNT,NET_AMOUNT_US,
+                                                    KUR_SAR_USD,ORDER_STATUS,CANCEL_DATE,CANCEL_REASON,INSERTED_DATE)
+                            SELECT ORDER_ID,ORDER_NAME,ORDER_DATE,SKU,VARIANT_TITLE,QUANTITY,PRICE,LINE_TOTAL,FULFILLMENT_DATE,FULFILLMENT_STATUS,RETURN_DATE,
+                               RETURN_QTY,RETURN_TYPE,REFUND_DATE,REFUNDED_QTY,REFUND_AMOUNT,ITEM_STATUS,ITEM_RETURNED,NET_QTY,NET_AMOUNT,NET_AMOUNT_US,
+                               KUR_SAR_USD,ORDER_STATUS,CANCEL_DATE,CANCEL_REASON,SYSDATE FROM XXASH_TMPIPKECOM WHERE RUN_ID='" & RunID & "'"
+            mclsOra.ExecuteNonQuery(strQuery)
+
+            mclsOra.ExecuteNonQuery("DELETE FROM XXASH_TMPIPKECOM WHERE RUN_ID='" & RunID & "'")
+
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "Error")
+        Finally
+            mclsOra.CloseDB()
+        End Try
+    End Sub
+
+    Private Sub AddMissingOrders(ByRef dtShopify As DataTable, fromDate As Date, toDate As Date)
+        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim strQuery As String = ""
+        Try
+            mclsOra.OpenDB()
+            strQuery = "SELECT ORDER_ID,ORDER_NAME,ORDER_DATE,SKU,VARIANT_TITLE,QUANTITY,PRICE,LINE_TOTAL,FULFILLMENT_DATE,FULFILLMENT_STATUS,RETURN_DATE,RETURN_QTY,RETURN_TYPE,
+                        REFUND_DATE,REFUNDED_QTY,REFUND_AMOUNT,ITEM_STATUS,ITEM_RETURNED,NET_QTY,NET_AMOUNT,ORDER_STATUS,CANCEL_DATE,CANCEL_REASON
+                        fROM XXASH_IPK_SHOPIFY_ORDERS where trunc(order_date) between '" & Format(fromDate, "dd-MMM-yyyy") & "' and '" & Format(toDate, "dd-MMM-yyyy") & "'
+                         order by order_date desc,order_id"
+            Dim dt As DataTable = mclsOra.GetDataSet(strQuery).Tables(0)
+            If dt.Rows.Count <> 0 Then
+
+                For Each dRow As DataRow In dt.Rows
+                    Dim newRow As DataRow = dtShopify.NewRow()
+                    newRow.ItemArray = dRow.ItemArray
+                    dtShopify.Rows.Add(newRow)
+                Next
+
+            End If
+
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "Error")
+        Finally
+            mclsOra.CloseDB()
         End Try
     End Sub
 
@@ -253,8 +439,8 @@ Public Class OnlineSalesComparison
         dtResult.Columns.Add("NET_QTY", GetType(Integer))
         dtResult.Columns.Add("NET_AMOUNT", GetType(Decimal))
 
-        dtResult.Columns.Add("NET_AMOUNT_US", GetType(Decimal))
-        dtResult.Columns.Add("Kur_SAR_USD", GetType(Decimal))
+        'dtResult.Columns.Add("NET_AMOUNT_US", GetType(Decimal))
+        'dtResult.Columns.Add("Kur_SAR_USD", GetType(Decimal))
 
         dtResult.Columns.Add("ORDER_STATUS", GetType(String))
 
@@ -389,12 +575,12 @@ Public Class OnlineSalesComparison
             Dim lineTotal As Decimal = qty * price
 
             Dim netQty As Integer = 0
-            If refundAmount = 0 Then
-                netQty = qty - returnQty
-            Else
-                netQty = qty - refundedQty
-            End If
-
+            'If refundAmount = 0 Then
+            '    netQty = qty - returnQty
+            'Else
+            '    netQty = qty - refundedQty
+            'End If
+            netQty = qty - refundedQty
 
 
             Dim netAmount As Decimal = lineTotal - refundAmount
@@ -452,8 +638,8 @@ Public Class OnlineSalesComparison
             nr("NET_QTY") = netQty
             nr("NET_AMOUNT") = netAmount
 
-            nr("NET_AMOUNT_US") = netAmountUs
-            nr("Kur_SAR_USD") = kurSarUsd
+            'nr("NET_AMOUNT_US") = netAmountUs
+            'nr("Kur_SAR_USD") = kurSarUsd
 
             nr("ORDER_STATUS") = orderStatus
 
@@ -838,6 +1024,54 @@ Public Class OnlineSalesComparison
         Return dtRefundLineItemsComp
 
     End Function
+
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        Try
+            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim dt As DataTable
+            Dim strQuery As String
+
+            mclsOra.OpenDB()
+            strQuery = "SELECT NOTES,O.ORDER_NAME,TO_CHAR(ORDER_DATE,'DD-MON-YYYY') ORDER_DATE,O.SKU,VARIANT_TITLE VARIANT,QUANTITY QTY,PRICE,LINE_TOTAL,RETURN_QTY,
+                        TO_CHAR(RETURN_DATE,'DD-MON-YYYY')RETURN_DATE,O.ORDER_ID
+                        FROM XXASH_IPK_SHOPIFY_ORDERS O LEFT OUTER JOIN XXASH_IPK_SHOPIFY_NOTES C ON O.ORDER_ID=C.ORDER_ID
+                        AND O.ORDER_NAME=C.ORDER_NAME AND O.SKU=C.SKU where O.order_name='" & txtSearch.Text.Trim() & "'"
+            dt = mclsOra.GetDataSet(strQuery).Tables(0)
+            If dt.Rows.Count <> 0 Then
+                gvOrderDetail.DataSource = dt
+                gvOrderDetail.DataBind()
+
+                Session("dtOrderDetail") = dt
+            Else
+                gvOrderDetail.DataSource = Nothing
+                gvOrderDetail.DataBind()
+
+                Session("dtOrderDetail") = Nothing
+            End If
+            mclsOra.CloseDB()
+
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Protected Sub chkSelectAll_CheckedChanged(sender As Object, e As EventArgs)
+        Dim chkSelectAll As CheckBox = TryCast(sender, CheckBox)
+
+        For Each row As GridViewRow In gvOrderDetail.Rows
+            Dim chk As CheckBox = TryCast(row.FindControl("chkSelect"), CheckBox)
+            If chk IsNot Nothing Then
+                chk.Checked = chkSelectAll.Checked
+            End If
+        Next
+
+    End Sub
+
+    Protected Sub chkSelect_CheckedChanged(sender As Object, e As EventArgs)
+        'If Session("SelectedUserGroupID") IsNot Nothing Then
+        'End If
+    End Sub
+
     Private Function GetRetailPRO_IpekyolOnlineSales() As DataTable
         Try
             Dim dt As DataTable, strQuery As String = ""
@@ -847,7 +1081,7 @@ Public Class OnlineSalesComparison
             'strQuery = "SELECT S.*,S.SALES_QTY-S.RETURN_QTY RP_NET_QTY,S.SALES_AMOUNT-S.RETURN_AMOUNT RP_NET_AMOUNT FROM
             '            (SELECT 
             '                SALLA_DOC_NO,
-            '                ALU,
+            '                ALU,0 ORDER_QTY,0 ORDER_AMOUNT,
             '                SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
             '                         THEN ITEM_ORDER_QTY ELSE 0 END) AS SALES_QTY,
             '                SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
@@ -859,47 +1093,29 @@ Public Class OnlineSalesComparison
             '            FROM XXASH_RP_ORDER_STATUS_BYITEM
             '            WHERE SUBSIDIARY_NO = 4
             '              AND SALLA_DOC_NO LIKE '%IPK%'
-            '              AND INVOICE_TYPE IN ('Sale','Return')
+            '              AND INVOICE_TYPE IN ('Sale','Return')        
+            '              AND UPC <> '64269' 
+            '            GROUP BY SALLA_DOC_NO, ALU
+            '        ORDER BY SALLA_DOC_NO)S    
+            '    UNION ALL    
+            '        SELECT S.*,S.ORDER_QTY RP_NET_QTY,S.ORDER_AMOUNT RP_NET_AMOUNT FROM
+            '            (SELECT 
+            '                SALLA_DOC_NO,
+            '                ALU,
+            '                SUM(CASE WHEN INVOICE_TYPE = 'Order' 
+            '                         THEN ITEM_ORDER_QTY ELSE 0 END) AS ORDER_QTY,
+            '                SUM(CASE WHEN INVOICE_TYPE = 'Order' 
+            '                         THEN ITEM_ORDER_QTY * UNIT_SELLING_PRICE ELSE 0 END) AS ORDER_AMOUNT,
+            '                         0 SALES_QTY,0 SALES_AMOUNT,0 RETURN_QTY,0 RETURN_AMOUNT           
+            '            FROM XXASH_RP_ORDER_STATUS_BYITEM
+            '            WHERE SUBSIDIARY_NO = 4
+            '              AND SALLA_DOC_NO LIKE '%IPK%'          
+            '            AND INVOICE_TYPE IN ('Order') and ORDER_STATUS='Pending'
             '              AND UPC <> '64269' 
             '            GROUP BY SALLA_DOC_NO, ALU
             '        ORDER BY SALLA_DOC_NO)S"
 
-            strQuery = "SELECT S.*,S.SALES_QTY-S.RETURN_QTY RP_NET_QTY,S.SALES_AMOUNT-S.RETURN_AMOUNT RP_NET_AMOUNT FROM
-                        (SELECT 
-                            SALLA_DOC_NO,
-                            ALU,0 ORDER_QTY,0 ORDER_AMOUNT,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
-                                     THEN ITEM_ORDER_QTY ELSE 0 END) AS SALES_QTY,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
-                                     THEN ITEM_ORDER_QTY * UNIT_SELLING_PRICE ELSE 0 END) AS SALES_AMOUNT,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Return' 
-                                     THEN ABS(ITEM_ORDER_QTY) ELSE 0 END) AS RETURN_QTY,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Return' 
-                                     THEN ABS(ITEM_ORDER_QTY * UNIT_SELLING_PRICE) ELSE 0 END) AS RETURN_AMOUNT
-                        FROM XXASH_RP_ORDER_STATUS_BYITEM
-                        WHERE SUBSIDIARY_NO = 4
-                          AND SALLA_DOC_NO LIKE '%IPK%'
-                          AND INVOICE_TYPE IN ('Sale','Return')        
-                          AND UPC <> '64269' 
-                        GROUP BY SALLA_DOC_NO, ALU
-                    ORDER BY SALLA_DOC_NO)S    
-                UNION ALL    
-                    SELECT S.*,S.ORDER_QTY RP_NET_QTY,S.ORDER_AMOUNT RP_NET_AMOUNT FROM
-                        (SELECT 
-                            SALLA_DOC_NO,
-                            ALU,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Order' 
-                                     THEN ITEM_ORDER_QTY ELSE 0 END) AS ORDER_QTY,
-                            SUM(CASE WHEN INVOICE_TYPE = 'Order' 
-                                     THEN ITEM_ORDER_QTY * UNIT_SELLING_PRICE ELSE 0 END) AS ORDER_AMOUNT,
-                                     0 SALES_QTY,0 SALES_AMOUNT,0 RETURN_QTY,0 RETURN_AMOUNT           
-                        FROM XXASH_RP_ORDER_STATUS_BYITEM
-                        WHERE SUBSIDIARY_NO = 4
-                          AND SALLA_DOC_NO LIKE '%IPK%'          
-                        AND INVOICE_TYPE IN ('Order') and ORDER_STATUS='Pending'
-                          AND UPC <> '64269' 
-                        GROUP BY SALLA_DOC_NO, ALU
-                    ORDER BY SALLA_DOC_NO)S                    "
+            strQuery = "SELECT * FROM XXASH_IPK_ORDER_STATUS_V"
 
             dt = mclsOra.GetDataSet(strQuery).Tables(0)
             mclsOra.CloseDB()
@@ -911,7 +1127,15 @@ Public Class OnlineSalesComparison
         End Try
     End Function
 
-    Private Function JoinIpekyolandRetailPROTables(dtShopify As DataTable, dtRetailPRO As DataTable) As DataTable
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        txtSearch.Text = ""
+        txtFilter.Text = ""
+        txtNote.Text = ""
+        gvOrderDetail.DataSource = Nothing
+        gvOrderDetail.DataBind()
+    End Sub
+
+    Private Function JoinIpekyolandRetailPROTables(dtShopify As DataTable, dtRetailPRO As DataTable, dtIPKOrderNotes As DataTable) As DataTable
         Try
             ' Build final joined datatable: dtFinal = dtShopify + RetailPRO columns joined on ORDER_NAME=SALLA_DOC_NO and SKU=ALU
             Dim dtFinal As DataTable = dtShopify.Clone()
@@ -924,9 +1148,10 @@ Public Class OnlineSalesComparison
             If Not dtFinal.Columns.Contains("RP_NET_QTY") Then dtFinal.Columns.Add("RP_NET_QTY", GetType(Integer))
             If Not dtFinal.Columns.Contains("RP_NET_AMOUNT") Then dtFinal.Columns.Add("RP_NET_AMOUNT", GetType(Decimal))
 
-            ' Add status columns
             If Not dtFinal.Columns.Contains("NET_QTY_STATUS") Then dtFinal.Columns.Add("NET_QTY_STATUS", GetType(String))
             If Not dtFinal.Columns.Contains("NET_AMOUNT_STATUS") Then dtFinal.Columns.Add("NET_AMOUNT_STATUS", GetType(String))
+
+            If Not dtFinal.Columns.Contains("NOTES") Then dtFinal.Columns.Add("NOTES", GetType(String))
 
             ' Build lookup from RetailPRO: key = SALLA_DOC_NO + "|" + ALU (normalized)
             Dim rpLookup As New Dictionary(Of String, DataRow)(StringComparer.OrdinalIgnoreCase)
@@ -937,6 +1162,20 @@ Public Class OnlineSalesComparison
                     Dim key As String = String.Format("{0}|{1}", salla, alu)
                     If Not rpLookup.ContainsKey(key) Then
                         rpLookup.Add(key, r)
+                    End If
+                Next
+            End If
+
+            ' Build lookup for comments: key = ORDER_NAME + "|" + SKU
+            Dim noteLookup As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
+            If dtIPKOrderNotes IsNot Nothing Then
+                For Each cRow As DataRow In dtIPKOrderNotes.Rows
+                    Dim oName As String = Convert.ToString(cRow("ORDER_NAME")).Trim()
+                    Dim sku As String = Convert.ToString(cRow("SKU")).Trim()
+                    Dim note As String = If(IsDBNull(cRow("NOTES")), String.Empty, Convert.ToString(cRow("NOTES")))
+                    Dim key As String = String.Format("{0}|{1}", oName, sku)
+                    If Not NoteLookup.ContainsKey(key) Then
+                        NoteLookup.Add(key, note)
                     End If
                 Next
             End If
@@ -1001,17 +1240,32 @@ Public Class OnlineSalesComparison
                     newRow("RP_NET_QTY") = 0
                     newRow("RP_NET_AMOUNT") = 0D
 
-                    ' Compute statuses even when there's no RP row:
-                    ' treat zero vs zero as Matched (handles your screenshot case)
-                    Dim shopNetQty As Integer = ToInt(s("NET_QTY"))
-                    Dim rpNetQty As Integer = 0
-                    newRow("NET_QTY_STATUS") = If(shopNetQty = rpNetQty, "Matched", "Unmatched")
+                    If UCase(s("ORDER_STATUS")) = "PENDING" Then
+                        newRow("NET_QTY_STATUS") = "Matched"
+                        newRow("NET_AMOUNT_STATUS") = "Matched"
+                    Else
+                        Dim shopNetQty As Integer = ToInt(s("NET_QTY"))
+                        Dim rpNetQty As Integer = 0
+                        newRow("NET_QTY_STATUS") = If(shopNetQty = rpNetQty, "Matched", "Unmatched")
 
-                    Dim shopNetAmount As Decimal = ToDecimal(s("NET_AMOUNT"))
-                    Dim rpNetAmount As Decimal = 0D
-                    Dim amtMatched As Boolean = Math.Abs(shopNetAmount - rpNetAmount) <= 0.01D
-                    newRow("NET_AMOUNT_STATUS") = If(amtMatched, "Matched", "Unmatched")
+                        Dim shopNetAmount As Decimal = ToDecimal(s("NET_AMOUNT"))
+                        Dim rpNetAmount As Decimal = 0D
+                        Dim amtMatched As Boolean = Math.Abs(shopNetAmount - rpNetAmount) <= 0.01D
+                        newRow("NET_AMOUNT_STATUS") = If(amtMatched, "Matched", "Unmatched")
+
+                    End If
+
                 End If
+
+                ' lookup note
+                Dim noteVal As String = ""
+                If NoteLookup.Count > 0 Then
+                    Dim cKey As String = lookupKey
+                    If NoteLookup.ContainsKey(cKey) Then
+                        noteVal = NoteLookup(cKey)
+                    End If
+                End If
+                newRow("NOTES") = noteVal
 
                 dtFinal.Rows.Add(newRow)
             Next
@@ -1076,6 +1330,82 @@ Public Class OnlineSalesComparison
         End Try
     End Function
 
+    Protected Sub btnFilter_Click(sender As Object, e As EventArgs) Handles btnFilter.Click
+        Try
+
+            If Not Session("dtOrderDetail") Is Nothing Then
+
+                Dim dv As DataView
+                dv = DirectCast(Session("dtOrderDetail"), DataTable).DefaultView
+                dv.RowFilter = "SKU like '" & txtFilter.Text & "%'"
+
+                gvOrderDetail.DataSource = dv
+                gvOrderDetail.DataBind()
+
+                Session("dtOrderDetail") = dv.ToTable
+
+            End If
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Protected Sub btnUpdateNote_Click(sender As Object, e As EventArgs) Handles btnUpdateNote.Click
+        Try
+
+            If Not Session("dtOrderDetail") Is Nothing Then
+                For Each row As GridViewRow In gvOrderDetail.Rows
+
+                    Dim chk As CheckBox = TryCast(row.FindControl("chkSelect"), CheckBox)
+                    If chk.Checked Then
+                        row.Cells(1).Text = txtNote.Text.Trim
+
+                        UpdateNote(txtNote.Text.Trim, row.Cells(11).Text.Trim, row.Cells(2).Text.Trim, row.Cells(4).Text.Trim)
+                    End If
+
+                Next
+
+            End If
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Private Sub UpdateNote(strNote As String, strOrderID As String, strOrderName As String, strSKU As String)
+        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Try
+            mclsOra.OpenDB()
+
+            Dim strChk As String = "SELECT COUNT(*) CNT FROM XXASH_IPK_SHOPIFY_NOTES WHERE ORDER_ID='" & strOrderID & "' AND ORDER_NAME='" & strOrderName & "' AND SKU='" & strSKU & "'"
+            Dim dtChk As DataTable = mclsOra.GetDataSet(strChk).Tables(0)
+            Dim cnt As Integer = 0
+            If dtChk.Rows.Count > 0 Then
+                Integer.TryParse(dtChk.Rows(0)("CNT").ToString(), cnt)
+            End If
+
+            Dim strUsername As String = TryCast(Session("username"), String)
+
+            Dim strSql As String = ""
+            If cnt > 0 Then
+                strSql = "UPDATE XXASH_IPK_SHOPIFY_NOTES SET NOTES='" & strNote & "', UPDATED_DATE=SYSDATE,UPDATED_BY='" & strUsername & "' 
+                          WHERE ORDER_ID='" & strOrderID & "' AND ORDER_NAME='" & strOrderName & "' AND SKU='" & strSKU & "'"
+            Else
+                strSql = "INSERT INTO XXASH_IPK_SHOPIFY_NOTES(ORDER_ID,ORDER_NAME,SKU,NOTES,UPDATED_DATE,UPDATED_BY) VALUES(" &
+                         "'" & strOrderID & "','" & strOrderName & "','" & strSKU & "','" & strNote & "',SYSDATE,'" & strUsername & "')"
+            End If
+
+            mclsOra.ExecuteNonQuery(strSql)
+
+            ShowMessageAlert(Me, "Note updated successfully.", "success")
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            mclsOra.CloseDB()
+        End Try
+
+    End Sub
+
     Private Sub ddlStore_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlStore.SelectedIndexChanged
         Session("store_code") = Mid(ddlStore.SelectedValue, 1, InStr(ddlStore.SelectedValue, "-") - 1)
     End Sub
@@ -1130,6 +1460,87 @@ Public Class OnlineSalesComparison
 
     End Function
 
+    Private Sub gvOrderDetail_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles gvOrderDetail.RowEditing
+        Try
+            gvOrderDetail.EditIndex = e.NewEditIndex
+            ' rebind to put GridView in edit mode; btnSearch_Click will re-query using txtSearch
+            btnSearch_Click(Nothing, Nothing)
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Private Sub gvOrderDetail_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles gvOrderDetail.RowCancelingEdit
+        Try
+            gvOrderDetail.EditIndex = -1
+            btnSearch_Click(Nothing, Nothing)
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Protected Sub gvOrderDetail_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles gvOrderDetail.RowUpdating
+        Try
+            Dim row As GridViewRow = gvOrderDetail.Rows(e.RowIndex)
+
+            Dim txtComments As TextBox = CType(row.FindControl("txtComments"), TextBox)
+
+            If txtComments Is Nothing Then
+                ShowMessageAlert(Me, "Comments control not found. Ensure GridView uses a TemplateField with TextBox ID='txtComments' in EditItemTemplate.", "error")
+                Return
+            End If
+
+            Dim comments As String = txtComments.Text.Trim()
+
+            Dim orderId As String = Convert.ToString(gvOrderDetail.DataKeys(e.RowIndex).Values("ORDER_ID"))
+            Dim orderName As String = Convert.ToString(gvOrderDetail.DataKeys(e.RowIndex).Values("ORDER_NAME"))
+            Dim sku As String = Convert.ToString(gvOrderDetail.DataKeys(e.RowIndex).Values("SKU"))
+
+            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Try
+                mclsOra.OpenDB()
+
+                ' sanitize single quotes for direct SQL (consistent with existing code style)
+                Dim sOrderId As String = orderId.Replace("'", "''")
+                Dim sOrderName As String = orderName.Replace("'", "''")
+                Dim sSku As String = sku.Replace("'", "''")
+                Dim sComments As String = comments.Replace("'", "''")
+
+                Dim strChk As String = "SELECT COUNT(*) CNT FROM XXASH_IPK_SHOPIFY_COMMENTS WHERE ORDER_ID='" & sOrderId & "' AND ORDER_NAME='" & sOrderName & "' AND SKU='" & sSku & "'"
+                Dim dtChk As DataTable = mclsOra.GetDataSet(strChk).Tables(0)
+                Dim cnt As Integer = 0
+                If dtChk.Rows.Count > 0 Then
+                    Integer.TryParse(dtChk.Rows(0)("CNT").ToString(), cnt)
+                End If
+
+                Dim strSql As String = ""
+                If cnt > 0 Then
+                    strSql = "UPDATE XXASH_IPK_SHOPIFY_COMMENTS SET COMMENTS='" & sComments & "', UPDATED_DATE=SYSDATE " &
+                         "WHERE ORDER_ID='" & sOrderId & "' AND ORDER_NAME='" & sOrderName & "' AND SKU='" & sSku & "'"
+                Else
+                    strSql = "INSERT INTO XXASH_IPK_SHOPIFY_COMMENTS(ORDER_ID,ORDER_NAME,SKU,COMMENTS,UPDATED_DATE) VALUES(" &
+                         "'" & sOrderId & "','" & sOrderName & "','" & sSku & "','" & sComments & "',SYSDATE)"
+                End If
+
+                mclsOra.ExecuteNonQuery(strSql)
+            Finally
+                mclsOra.CloseDB()
+            End Try
+
+            ' exit edit mode and rebind to show updated comments
+            gvOrderDetail.EditIndex = -1
+            btnSearch_Click(Nothing, Nothing)
+
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Private Sub gvOrderDetail_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles gvOrderDetail.RowDataBound
+        e.Row.Cells(1).Wrap = False
+        e.Row.Cells(5).Wrap = False
+        e.Row.Cells(11).Visible = False
+    End Sub
     Private Class RefundEntry
         Public Property ReturnDate As String = ""
         Public Property ReturnQty As Integer = 0

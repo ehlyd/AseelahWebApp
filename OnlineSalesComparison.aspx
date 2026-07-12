@@ -17,13 +17,13 @@
 
         @media (min-width: 992px) {
             .OnlineSalesComp {
-                width: 50%;
+                width: 70%;
             }
         }
 
         @media (min-width: 1200px) {
             .OnlineSalesComp {
-                width: 40%;
+                width: 60%;
             }
         }
     </style>
@@ -67,7 +67,7 @@
                 <div class="col-4">
                     <asp:TextBox ID="txtFromDate" class="form-control-sm fromdate" Style="width: 100%; max-width: 100%;" runat="server" TextMode="Date"></asp:TextBox>
                 </div>
-                <div class="col-1">
+                <div class="col-1" style="text-align: center;">
                     <asp:Label ID="Label4" class="form-label-sm" runat="server" Text="To"></asp:Label>
                 </div>
                 <div class="col-5">
@@ -80,18 +80,67 @@
                     <asp:Button ID="btnDownload" class="btn btn-secondary btn-sm" Style="width: 120px;" runat="server" Text="Download" OnClick="btnDownload_Click" OnClientClick="downloadClick();" />
                 </div>
             </div>
+            </div>
 
-            <%--  <!-- Filter UI -->
-            <asp:Panel ID="pnlFilter" runat="server">
-                <asp:Label ID="lblFilterBy" runat="server" Text="Filter by: " />
-                <asp:DropDownList ID="ddlFilterColumn" runat="server" />
-                <asp:TextBox ID="txtFilter" runat="server" Width="200px" />
-                <asp:Button ID="btnApplyFilter" runat="server" Text="Apply Filter" OnClick="btnApplyFilter_Click" />
-            </asp:Panel>
+         <%--   <hr id="hr1" runat="server" />--%>
+        <div class="container OnlineSalesComp" id="ipkaddnote" runat="server" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;">
+            <div class="row" style="margin-top: 20px; width: 100%;">
+                <div class="col">
+                    <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                        <asp:Label ID="Label5" class="form-label-sm" runat="server" Text="Order Name"></asp:Label>
+                        <asp:TextBox ID="txtSearch" class="form-control-sm" Style="margin-left: 17px; width: 343px;" runat="server"></asp:TextBox>
 
-            <!-- GridView with paging -->
-            <asp:GridView ID="gvResults" runat="server" AutoGenerateColumns="true" AllowPaging="true" PageSize="25"
-                OnPageIndexChanging="gvResults_PageIndexChanging" EmptyDataText="No records to display." />--%>
+                        <asp:Button ID="btnSearch" runat="server" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" Text="Search" OnClick="btnSearch_Click" />
+                        <asp:Button ID="btnClear" runat="server" Text="Clear" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
+                    </asp:Panel>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px; width: 100%;">
+                <div class="col">
+                    <asp:Label ID="Label6" runat="server" class="form-label-sm" Text="Filter by SKU"></asp:Label>
+                    <asp:TextBox ID="txtFilter" class="form-control-sm" Style="margin-left: 15px; " runat="server" Width="343px"></asp:TextBox>
+                    <asp:Button ID="btnFilter" runat="server" Text="Filter" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px; width: 100%;">
+                <div class="col">
+                    <asp:Label ID="Label7" runat="server" Text="Enter note"></asp:Label>
+                    <asp:TextBox ID="txtNote" class="form-control-sm" Style="margin-left: 31px;" runat="server" Width="368px"></asp:TextBox>
+                    <asp:Button ID="btnUpdateNote" runat="server" Text="Update"  class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
+                    </div>
+             </div>
+            <div class="row" style="margin-top: 10px; width: 100%;">
+                <div class="col" style="overflow-x: auto;">                                     
+
+                    <asp:GridView ID="gvOrderDetail" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" Width="100%" Font-Size="Small">
+                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                        <EditRowStyle BackColor="#999999" />
+                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                        <SelectedRowStyle BackColor="#CCFFCC" Font-Bold="True" ForeColor="#333333" />
+                        <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                        <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                        <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                        <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+
+                        <Columns>
+
+                            <asp:TemplateField>
+                                <HeaderTemplate>
+                                    <asp:CheckBox ID="chkSelectAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkSelectAll_CheckedChanged" />
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:CheckBox ID="chkSelect" runat="server" AutoPostBack="True" OnCheckedChanged="chkSelect_CheckedChanged" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+
+                </div>
+            </div>
+
         </div>
 
     </asp:Panel>
