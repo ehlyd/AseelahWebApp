@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col">
 
-                    <h2 id="title" style="margin-top:20px;"><%: Title %></h2>
+                    <h3 id="title"><%: Title %></h3>
                     <hr />
                     <p><strong>IT Department</strong></p>
 

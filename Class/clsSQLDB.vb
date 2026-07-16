@@ -12,6 +12,8 @@ Public Class clsSQLDB
 
             Dim connectionString As String = ConfigurationManager.ConnectionStrings("SQLConnection").ConnectionString
 
+            Dim mclsEncrypt As New clsEncryptDecrypt
+            connectionString = mclsEncrypt.Decrypt(connectionString)
 
             sqlCN = New SqlConnection
             sqlCN.ConnectionString = connectionString '"Persist Security Info=False;Data Source=" & strServer & ";Initial Catalog=" & strDatabase & ";User ID=" & strUserID & ";Password=" & strPswrd
@@ -44,6 +46,14 @@ Public Class clsSQLDB
             Throw ex
         End Try
     End Sub
+
+    'Public Function IsDBOpen() As Boolean
+    '    If sqlCN.State = ConnectionState.Open Then
+    '        Return True
+    '    Else
+    '        Return False
+    '    End If
+    'End Function
 
     Public Sub ExecuteNonQuery(ByVal strSQLQuery As String)
         Try

@@ -3,12 +3,15 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\idabu\OneDrive - Al Jedaie Group\source .net 4.5.1\WebApp\AseelahWebApps\AseelahWebApps\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2025-11-06T08:35:22.2594359Z||;True|2025-11-06T11:29:05.0358789+03:00||;True|2025-11-06T11:28:54.3092009+03:00||;True|2025-10-13T14:13:33.5880806+03:00||;True|2025-10-13T10:28:52.1900427+03:00||;True|2025-10-13T09:27:39.9591149+03:00||;True|2025-10-13T09:20:09.0337822+03:00||;True|2025-09-16T12:15:20.8233013+03:00||;</History>
+    <History>True|2026-07-01T12:48:51.3578920Z||;True|2026-05-21T14:43:37.5777760+03:00||;True|2026-05-18T09:50:10.2501814+03:00||;True|2026-05-18T09:41:00.5188140+03:00||;True|2026-05-17T16:35:56.3457357+03:00||;True|2026-05-17T13:07:19.5524703+03:00||;True|2026-05-11T14:34:33.1567664+03:00||;True|2026-05-11T13:11:33.5428111+03:00||;True|2025-11-06T11:35:22.2594359+03:00||;True|2025-11-06T11:29:05.0358789+03:00||;True|2025-11-06T11:28:54.3092009+03:00||;True|2025-10-13T14:13:33.5880806+03:00||;True|2025-10-13T10:28:52.1900427+03:00||;True|2025-10-13T09:27:39.9591149+03:00||;True|2025-10-13T09:20:09.0337822+03:00||;True|2025-09-16T12:15:20.8233013+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
-      <publishTime>11/06/2025 10:26:55</publishTime>
+      <publishTime>11/17/2025 16:07:32</publishTime>
+    </File>
+    <File Include="bin/AjaxControlToolkit.dll">
+      <publishTime>05/20/2020 17:04:00</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 16:29:20</publishTime>
@@ -17,10 +20,10 @@
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.dll">
-      <publishTime>11/06/2025 11:28:52</publishTime>
+      <publishTime>07/01/2026 15:58:38</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.pdb">
-      <publishTime>11/06/2025 11:28:52</publishTime>
+      <publishTime>07/01/2026 15:58:38</publishTime>
     </File>
     <File Include="bin/de/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -42,6 +45,15 @@
     </File>
     <File Include="bin/EnvDTE.dll">
       <publishTime>10/22/2009 19:51:18</publishTime>
+    </File>
+    <File Include="bin/EPPlus.dll">
+      <publishTime>03/04/2025 16:51:30</publishTime>
+    </File>
+    <File Include="bin/EPPlus.Interfaces.dll">
+      <publishTime>03/04/2025 16:51:48</publishTime>
+    </File>
+    <File Include="bin/EPPlus.System.Drawing.dll">
+      <publishTime>03/04/2025 16:52:06</publishTime>
     </File>
     <File Include="bin/es/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -317,7 +329,7 @@
       <publishTime>02/11/2014 15:26:04</publishTime>
     </File>
     <File Include="bin/WebForms_Basic.xml">
-      <publishTime>11/06/2025 11:28:52</publishTime>
+      <publishTime>07/01/2026 15:58:38</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
@@ -361,11 +373,14 @@
     <File Include="Bundle.config">
       <publishTime>05/20/2025 12:49:21</publishTime>
     </File>
+    <File Include="ChangePswrd.aspx">
+      <publishTime>11/16/2025 15:51:46</publishTime>
+    </File>
     <File Include="CleanupHandler.ashx">
       <publishTime>10/09/2025 10:21:11</publishTime>
     </File>
     <File Include="Contact.aspx">
-      <publishTime>09/16/2025 10:32:18</publishTime>
+      <publishTime>11/17/2025 16:07:32</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>05/20/2025 12:49:46</publishTime>
@@ -473,10 +488,10 @@
       <publishTime>09/15/2025 10:17:22</publishTime>
     </File>
     <File Include="Default.aspx">
-      <publishTime>10/28/2025 11:23:36</publishTime>
+      <publishTime>05/18/2026 08:59:13</publishTime>
     </File>
     <File Include="ExportItemMaster.aspx">
-      <publishTime>11/06/2025 10:41:34</publishTime>
+      <publishTime>05/11/2026 11:40:29</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>05/20/2025 12:49:21</publishTime>
@@ -485,10 +500,10 @@
       <publishTime>05/20/2025 12:49:21</publishTime>
     </File>
     <File Include="GroupAccess.aspx">
-      <publishTime>10/12/2025 11:34:39</publishTime>
+      <publishTime>11/12/2025 16:13:24</publishTime>
     </File>
     <File Include="Home.aspx">
-      <publishTime>11/06/2025 11:34:25</publishTime>
+      <publishTime>05/18/2026 08:59:13</publishTime>
     </File>
     <File Include="images/access-control.png">
       <publishTime>09/22/2025 13:36:29</publishTime>
@@ -502,14 +517,35 @@
     <File Include="images/inventory.png">
       <publishTime>09/11/2025 11:57:48</publishTime>
     </File>
+    <File Include="images/inventory_detail.png">
+      <publishTime>01/26/2026 09:59:32</publishTime>
+    </File>
+    <File Include="images/physical_inventory.png">
+      <publishTime>11/19/2025 11:41:03</publishTime>
+    </File>
+    <File Include="images/sales-marketing.png">
+      <publishTime>05/06/2026 13:42:21</publishTime>
+    </File>
+    <File Include="images/shopping-list.png">
+      <publishTime>05/06/2026 13:46:35</publishTime>
+    </File>
     <File Include="Login.aspx">
       <publishTime>09/11/2025 10:03:16</publishTime>
     </File>
     <File Include="Login2.aspx">
       <publishTime>09/16/2025 11:42:34</publishTime>
     </File>
+    <File Include="OnlineSalesComparison.aspx">
+      <publishTime>05/11/2026 11:38:25</publishTime>
+    </File>
+    <File Include="Physical_Inventory.aspx">
+      <publishTime>12/17/2025 15:51:14</publishTime>
+    </File>
+    <File Include="PIDetails.aspx">
+      <publishTime>01/29/2026 12:11:34</publishTime>
+    </File>
     <File Include="PISummary.aspx">
-      <publishTime>10/09/2025 12:59:01</publishTime>
+      <publishTime>05/10/2026 11:48:07</publishTime>
     </File>
     <File Include="ReportForms/PISummaryReport.aspx">
       <publishTime>09/14/2025 15:25:23</publishTime>
@@ -570,6 +606,9 @@
     </File>
     <File Include="Scripts/modernizr-2.8.3.js">
       <publishTime>05/20/2025 12:49:36</publishTime>
+    </File>
+    <File Include="Scripts/UsernameIcon.js">
+      <publishTime>11/18/2025 11:40:17</publishTime>
     </File>
     <File Include="Scripts/WebForms/DetailsView.js">
       <publishTime>05/20/2025 12:49:52</publishTime>
@@ -635,7 +674,7 @@
       <publishTime>05/20/2025 12:49:52</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>11/06/2025 10:33:12</publishTime>
+      <publishTime>05/21/2026 16:10:40</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>05/20/2025 12:49:21</publishTime>
@@ -659,13 +698,25 @@
       <publishTime>09/14/2025 12:47:39</publishTime>
     </File>
     <File Include="StyleSheet.css">
-      <publishTime>09/16/2025 10:25:23</publishTime>
+      <publishTime>05/18/2026 10:45:55</publishTime>
+    </File>
+    <File Include="UserGroup.aspx">
+      <publishTime>11/11/2025 09:45:09</publishTime>
+    </File>
+    <File Include="UserGroupList.aspx">
+      <publishTime>11/19/2025 13:31:42</publishTime>
+    </File>
+    <File Include="UserList.aspx">
+      <publishTime>11/19/2025 13:31:42</publishTime>
+    </File>
+    <File Include="Users.aspx">
+      <publishTime>11/19/2025 13:31:43</publishTime>
     </File>
     <File Include="ViewSwitcher.ascx">
       <publishTime>05/20/2025 12:49:21</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/06/2025 11:28:53</publishTime>
+      <publishTime>07/01/2026 15:48:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

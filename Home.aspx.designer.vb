@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class _Default
 
     '''<summary>
+    '''imgBtnPICol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnPICol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''imgBtnPI control.
     '''</summary>
     '''<remarks>
@@ -23,13 +32,31 @@ Partial Public Class _Default
     Protected WithEvents imgBtnPI As Global.System.Web.UI.WebControls.ImageButton
 
     '''<summary>
-    '''imgBtnPIDetail control.
+    '''imgBtnPhysicalInvCol control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgBtnPIDetail As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imgBtnPhysicalInvCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''imgBtnPhysicalInv control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnPhysicalInv As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''imgBtnExportItemsCol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnExportItemsCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''imgBtnExportItems control.
@@ -41,6 +68,33 @@ Partial Public Class _Default
     Protected WithEvents imgBtnExportItems As Global.System.Web.UI.WebControls.ImageButton
 
     '''<summary>
+    '''imgBtnOnlineSalesCol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnOnlineSalesCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''imgBtnOnlineSales control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgBtnOnlineSales As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''HyperLinkPISummaryCol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkPISummaryCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''HyperLinkPISummary control.
     '''</summary>
     '''<remarks>
@@ -50,13 +104,31 @@ Partial Public Class _Default
     Protected WithEvents HyperLinkPISummary As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''HyperLinkPIDetail control.
+    '''HyperLinkPysicalInvCol control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HyperLinkPIDetail As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents HyperLinkPysicalInvCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''HyperLinkPysicalInv control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkPysicalInv As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''HyperLinkExportItemCol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkExportItemCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''HyperLinkExportItem control.
@@ -66,4 +138,22 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HyperLinkExportItem As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''HyperLinkOnlineSalesCol control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkOnlineSalesCol As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''HyperLinkOnlineSales control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HyperLinkOnlineSales As Global.System.Web.UI.WebControls.HyperLink
 End Class
