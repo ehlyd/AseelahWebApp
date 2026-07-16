@@ -3,15 +3,11 @@
   "WorkspaceRootPath": "C:\\ehly\\source\\AseelahWebApps\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\pisummary.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
-      "RelativeMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|solutionrelative:pisummary.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|c:\\ehly\\source\\aseelahwebapps\\onlinesalescomparison.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\onlinesalescomparison.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
       "RelativeMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|solutionrelative:onlinesalescomparison.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\class\\clsshopifyapi.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|c:\\ehly\\source\\aseelahwebapps\\class\\clsshopifyapi.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
       "RelativeMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|solutionrelative:class\\clsshopifyapi.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     },
     {
@@ -33,6 +29,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\pisummary.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
       "RelativeMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|solutionrelative:pisummary.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\pisummary.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|solutionrelative:pisummary.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}|AseelahWebApps.vbproj|C:\\ehly\\source\\AseelahWebApps\\home.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,7 +74,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "clsShopifyAPI.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\Class\\clsShopifyAPI.vb",
               "RelativeDocumentMoniker": "Class\\clsShopifyAPI.vb",
@@ -82,11 +82,12 @@
               "RelativeToolTip": "Class\\clsShopifyAPI.vb",
               "ViewState": "AgIAAE4BAAAAAAAAAAAqwGABAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2026-07-15T11:50:55.928Z"
+              "WhenOpened": "2026-07-15T11:50:55.928Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Module1.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\Module1.vb",
               "RelativeDocumentMoniker": "Module1.vb",
@@ -94,11 +95,12 @@
               "RelativeToolTip": "Module1.vb",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2026-07-14T10:30:27.464Z"
+              "WhenOpened": "2026-07-14T10:30:27.464Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ExportItemMaster.aspx.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\ExportItemMaster.aspx.vb",
               "RelativeDocumentMoniker": "ExportItemMaster.aspx.vb",
@@ -106,7 +108,8 @@
               "RelativeToolTip": "ExportItemMaster.aspx.vb",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2026-07-14T08:37:38.22Z"
+              "WhenOpened": "2026-07-14T08:37:38.22Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -146,7 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "Default.aspx.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\Default.aspx.vb",
               "RelativeDocumentMoniker": "Default.aspx.vb",
@@ -158,16 +161,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "PISummary.aspx.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\PISummary.aspx.vb",
               "RelativeDocumentMoniker": "PISummary.aspx.vb",
               "ToolTip": "C:\\ehly\\source\\AseelahWebApps\\PISummary.aspx.vb",
               "RelativeToolTip": "PISummary.aspx.vb",
-              "ViewState": "AgIAADsBAAAAAAAAAAAEwFgBAABLAAAAAAAAAA==",
+              "ViewState": "AgIAADsBAAAAAAAAAAAEwEYBAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2026-07-08T06:39:04.982Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-08T06:39:04.982Z"
             },
             {
               "$type": "Document",
@@ -179,7 +181,8 @@
               "RelativeToolTip": "Site.Master.vb",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2026-07-07T07:43:08.881Z"
+              "WhenOpened": "2026-07-07T07:43:08.881Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -195,7 +198,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "OnlineSalesComparison.aspx.vb",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\OnlineSalesComparison.aspx.vb",
               "RelativeDocumentMoniker": "OnlineSalesComparison.aspx.vb",
@@ -220,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "PISummary.aspx",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\PISummary.aspx",
               "RelativeDocumentMoniker": "PISummary.aspx",
@@ -232,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "OnlineSalesComparison.aspx",
               "DocumentMoniker": "C:\\ehly\\source\\AseelahWebApps\\OnlineSalesComparison.aspx",
               "RelativeDocumentMoniker": "OnlineSalesComparison.aspx",
@@ -240,7 +243,8 @@
               "RelativeToolTip": "OnlineSalesComparison.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-07-02T06:02:55.676Z"
+              "WhenOpened": "2026-07-02T06:02:55.676Z",
+              "EditorCaption": ""
             }
           ]
         }
