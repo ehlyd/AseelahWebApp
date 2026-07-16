@@ -26,7 +26,9 @@ Public Class PISummary
 
     Private Sub FillSubsidiary()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -50,7 +52,8 @@ Public Class PISummary
 
     Private Sub FillStore()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
             Dim strQuery As String
 
@@ -85,7 +88,8 @@ Public Class PISummary
             strSBSNo = Session("sbs_no")
             strStoreCode = Session("store_code")
 
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -100,7 +104,7 @@ Public Class PISummary
             '            AND PIS.IN_PROGRESS<>3 AND (PST.QTY<>0 OR (NVL(PZQ.SCAN_QTY,0)+NVL(PZQ.IMPORTED_QTY,0)+NVL(PZQ.MANUAL_QTY,0)) <>0)
             '            ORDER BY TO_CHAR(PIS.CREATED_DATETIME,'YYYY-MM-DD') DESC"
 
-            strQuery = "SELECT EBS_PI_NO,PI_NAME,CREATED_DATE,START_QTY,COUNTED_QTY,DIFFERENCES_QTY,DIFFERENCES_SALES_PRICE,PI_STATUS
+            strQuery = "SELECT EBS_PI_NO,PI_NAME,CREATED_DATE,START_QTY,COUNTED_QTY,DIFFERENCES_QTY,DIFFERENCES_SALES_PRICE,PI_STATUS,PIS_SID
                          FROM XXASH_PISUMMARY_V WHERE STORE_CODE='" & strStoreCode & "' and SBS_NO=" & strSBSNo & "  
                         ORDER BY CREATED_DATE DESC"
 
@@ -169,7 +173,8 @@ Public Class PISummary
 
     Private Sub ShowCountReport(strPIName As String)
 
-        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
         Dim dt As DataTable
         Dim strQuery As String = ""
 
@@ -222,10 +227,22 @@ Public Class PISummary
     Private Sub gridViewPI_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles gridViewPI.RowDataBound
         If e.Row.RowType = DataControlRowType.DataRow Then
 
-            Dim selectButton As LinkButton = TryCast(e.Row.Cells(0).Controls(0), LinkButton)
+            Dim editButton As LinkButton = TryCast(e.Row.Cells(0).Controls(0), LinkButton)
+            If editButton IsNot Nothing Then
+                editButton.Text = "Download Detail"
+                editButton.CssClass = "gridLineDownload"
+                editButton.OnClientClick = "downloadClick();"
+                editButton.Style.Add("white-space", "nowrap")
+                e.Row.Cells(0).Style.Add("white-space", "nowrap")
+            End If
+
+            Dim selectButton As LinkButton = TryCast(e.Row.Cells(0).Controls(2), LinkButton)
             If selectButton IsNot Nothing Then
                 selectButton.Text = "Show Count Form"
+                selectButton.CssClass = "gridLineCountForm"
                 selectButton.OnClientClick = "showWaitCursor();"
+                selectButton.Style.Add("white-space", "nowrap")
+                e.Row.Cells(0).Style.Add("white-space", "nowrap")
             End If
 
             'If IsNumeric(e.Row.Cells(1).Text) Then
@@ -255,6 +272,7 @@ Public Class PISummary
                 e.Row.Cells(7).Text = Format(CDbl(e.Row.Cells(7).Text), "#,##0")
             End If
 
+            e.Row.Cells(9).Visible = False
 
         ElseIf e.Row.RowType = DataControlRowType.Header Then
             e.Row.Cells(1).Text = "EBS PI#"
@@ -272,6 +290,8 @@ Public Class PISummary
 
             e.Row.Cells(8).Text = "Status"
 
+            e.Row.Cells(9).Visible = False
+
             'e.Row.Cells(7).CssClass = "alignCenter"
 
             For i As Integer = 3 To 6
@@ -285,10 +305,60 @@ Public Class PISummary
     Private Sub gridViewPI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gridViewPI.SelectedIndexChanged
         Try
             ShowCountReport(gridViewPI.SelectedRow.Cells(2).Text)
+        Catch ex As Exception
+            ShowMessageAlert(Me, ex.Message, "error")
+        End Try
+    End Sub
+
+    Private Sub gridViewPI_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles gridViewPI.RowEditing
+        Try
+            Dim row As GridViewRow = gridViewPI.Rows(e.NewEditIndex)
+
+            Dim strPiSID As String = row.Cells(9).Text
+            Dim strPIName As String = row.Cells(2).Text
+
+            DownloadPIDetails(strPiSID, strPIName)
 
         Catch ex As Exception
             ShowMessageAlert(Me, ex.Message, "error")
         End Try
     End Sub
 
+    Private Sub DownloadPIDetails(PiSID As String, PIName As String)
+        Try
+            Dim dt As DataTable
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
+            mclsOra.OpenDB()
+
+            Dim strStoreCode As String = Session("store_code")
+
+            dt = mclsOra.GetDatatableSP("XXASH_INV_DETAIL_RPT", New String() {"p_StoreCode", "p_PiSID"}, New OracleDbType() {OracleDbType.Varchar2, OracleDbType.Varchar2}, New String() {strStoreCode, PiSID}, "p_InvDetail")
+            If dt.Rows.Count <> 0 Then
+
+                Dim strFilename As String = PIName & " - PI Detail.xlsx"
+                Dim filePath As String = Server.MapPath("~/Exports/" & strFilename)
+
+                Dim totalColumnNames As String() = {"START_QTY", "COUNTED_QTY", "DIFFERENCES_QTY", "LAST_COUNTED_QTY", "SHIPMENT_RECEIVED_QTY", "SOLD_QTY", "IBT_IN_QTY", "IBT_OUT_QTY", "INTRANSIT_QTY", "PI_ADJUST_QTY", "MANUAL_ADJUST_QTY", "SALES_QTY"}
+                ExportToExcel_EPPlus(dt, filePath, totalColumnNames)
+
+                Dim fileCookie As New HttpCookie("downloadStarted", "true")
+                fileCookie.Path = "/" ' Match the JS path
+                fileCookie.HttpOnly = False
+                fileCookie.Expires = DateTime.Now.AddMinutes(5)
+                Response.Cookies.Add(fileCookie)
+
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                Response.AddHeader("content-disposition", "attachment;filename=" & strFilename)
+                Response.TransmitFile(filePath)
+                Response.Flush()
+                Response.End()
+
+            End If
+
+        Catch ex As Exception
+            'ScriptManager.RegisterStartupScript(Me, Me.GetType(), "cursorDefault", "defaultCursor();", True)
+            Throw ex
+        End Try
+    End Sub
 End Class

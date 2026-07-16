@@ -6,25 +6,38 @@
 
         <div class="container" style="border: none; margin-top: 20px;">
 
-            <div class="row PISummary">
+            <div class="row PISummary" style="width: 100%;">
 
-                <div class="col">
-                    <asp:ImageButton ID="imgBtnPI" runat="server" Style="height: 80px; width: 80px;" ImageUrl="~/images/inventory.png" OnClick="imgBtnPI_Click" OnClientClick="showWaitCursor()" />
-                    <asp:ImageButton ID="imgBtnPIDetail" runat="server" Style="margin-left: 8%; height: 80px; width: 80px;" ImageUrl="~/images/inventory_detail.png" OnClick="imgBtnPIDetail_Click"  OnClientClick="showWaitCursor()" />
-                    <asp:ImageButton ID="imgBtnExportItems" runat="server" Style="margin-left: 10%; height: 80px; width: 80px;" ImageUrl="~/images/export textfile.png" OnClick="imBtnExportItems_Click" OnClientClick="showWaitCursor()" />
-                    <%--<asp:ImageButton ID="imBtnGroupAccess" runat="server" Style="margin-left: 30px; height: 80px; width: 80px;" ImageUrl="~/images/access-control.png" OnClick="imgBtnPI_Click" OnClientClick="showWaitCursor()" />--%>
+                <div class="col-2 colMnu" id="imgBtnPICol" runat="server">
+                    <asp:ImageButton ID="imgBtnPI" runat="server" Style="height: 80px; width: 80px;" ImageUrl="~/images/inventory.png" OnClick="imgBtnPI_Click" OnClientClick="showWaitCursor()" ToolTip="PI Summary" />
                 </div>
-
+                
+                <div class="col-2 colMnu" id="imgBtnPhysicalInvCol" runat="server">
+                    <asp:ImageButton ID="imgBtnPhysicalInv" runat="server" Style="height: 80px; width: 80px;" ImageUrl="~/images/physical_inventory.png" OnClick="imgBtnPhysicalInv_Click" OnClientClick="showWaitCursor()" ToolTip="Physical Inventory" />
+                </div>
+                <div class="col-2 colMnu" id="imgBtnExportItemsCol" runat="server">
+                    <asp:ImageButton ID="imgBtnExportItems" runat="server" Style="height: 80px; width: 80px;" ImageUrl="~/images/export textfile.png" OnClick="imBtnExportItems_Click" OnClientClick="showWaitCursor()" ToolTip="Export Items" />
+                </div>
+                <div class="col-2 colMnu" id="imgBtnOnlineSalesCol" runat="server">
+                    <asp:ImageButton ID="imgBtnOnlineSales" runat="server" Style="height: 80px; width: 80px;" ImageUrl="~/images/shopping-list.png" OnClientClick="showWaitCursor()" ToolTip="Online Sales Comparison" />
+                </div>
             </div>
 
-            <div class="row PISummary">
-                <div class="col">
+            <div class="row PISummary" style="width: 100%;">
+                <div class="col-2 colMnu" id="HyperLinkPISummaryCol" runat="server">
                     <asp:HyperLink ID="HyperLinkPISummary" runat="server" NavigateUrl="~/PISummary.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">PI Summary</asp:HyperLink>
-                    <asp:HyperLink ID="HyperLinkPIDetail" Style="margin-left: 10%;" runat="server" NavigateUrl="~/PIDetails.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">PI Detail</asp:HyperLink>
-                    <asp:HyperLink ID="HyperLinkExportItem" Style="margin-left: 10%;" runat="server" NavigateUrl="~/ExportItemMaster.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">Export Item Master</asp:HyperLink>
-                    <%--<asp:HyperLink ID="HyperLinkGroupAccess" Style="margin-left: 40px;" runat="server" NavigateUrl="~/GroupAccess.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">Group Access</asp:HyperLink>--%>
+                </div>
+                
+                <div class="col-2 colMnu" id="HyperLinkPysicalInvCol" runat="server">
+                    <asp:HyperLink ID="HyperLinkPysicalInv" runat="server" NavigateUrl="~/Physical_Inventory.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">Physical Inventory</asp:HyperLink>
+                </div>
+                <div class="col-2 colMnu" id="HyperLinkExportItemCol" runat="server">
+                    <asp:HyperLink ID="HyperLinkExportItem" runat="server" NavigateUrl="~/ExportItemMaster.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">Export Item Master</asp:HyperLink>
                 </div>
 
+                <div class="col-2 colMnu" id="HyperLinkOnlineSalesCol" runat="server">
+                    <asp:HyperLink ID="HyperLinkOnlineSales" runat="server" NavigateUrl="~/OnlineSalesComparison.aspx" OnClientClick="showWaitCursor()" Font-Size="Small">Online Sales Comparison</asp:HyperLink>
+                </div>
             </div>
 
         </div>

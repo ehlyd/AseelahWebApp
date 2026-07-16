@@ -5,5 +5,9 @@
         If Session("AuthSession") Is Nothing Then
             Response.Redirect("Default.aspx")
         End If
+
+        If Not IsPostBack Then
+            ShowHideMenu(Me)
+        End If
     End Sub
 End Class

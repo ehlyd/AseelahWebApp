@@ -6,9 +6,9 @@ Public Class PIDetails
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            If Session("AuthSession") Is Nothing Then
-                Response.Redirect("Default.aspx")
-            End If
+            'If Session("AuthSession") Is Nothing Then
+            '    Response.Redirect("Default.aspx")
+            'End If
 
             If Not IsPostBack Then
 
@@ -23,7 +23,7 @@ Public Class PIDetails
 
     Private Sub FillSubsidiary()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -47,7 +47,7 @@ Public Class PIDetails
 
     Private Sub FillStore()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
             Dim strQuery As String
 
@@ -82,7 +82,7 @@ Public Class PIDetails
             strSBSNo = Session("sbs_no")
             strStoreCode = Session("store_code")
 
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -185,7 +185,7 @@ Public Class PIDetails
     Private Sub DownloadPIDetails(PiSID As String, PIName As String)
         Try
             Dim dt As DataTable
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
 
             Dim strStoreCode As String = Session("store_code")

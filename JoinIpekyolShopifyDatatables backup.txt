@@ -1,0 +1,233 @@
+    Private Function JoinIpekyolShopifyDatatables() As DataTable
+        Try
+            Dim dtJoined As New DataTable("JoinedOrders")
+            dtJoined.Columns.Add("ORDER_ID", GetType(String))
+            dtJoined.Columns.Add("ORDER_NAME", GetType(String))
+
+            'dtJoined.Columns.Add("ORDER_DATE", GetType(DateTime))
+            dtJoined.Columns.Add("ORDER_DATE", GetType(String))
+
+            dtJoined.Columns.Add("SKU", GetType(String))
+            dtJoined.Columns.Add("QUANTITY", GetType(Integer))
+            dtJoined.Columns.Add("PRICE", GetType(Decimal))
+            dtJoined.Columns.Add("LINE_TOTAL", GetType(Decimal))
+
+            'dtJoined.Columns.Add("FULFILLMENT_DATE", GetType(DateTime))
+            dtJoined.Columns.Add("FULFILLMENT_DATE", GetType(String))
+
+            dtJoined.Columns.Add("FULFILLMENT_STATUS", GetType(String))
+
+            'dtJoined.Columns.Add("REFUND_DATE", GetType(DateTime))
+            dtJoined.Columns.Add("REFUND_DATE", GetType(String))
+
+            dtJoined.Columns.Add("REFUND_QTY", GetType(Integer))
+            dtJoined.Columns.Add("REFUND_AMOUNT", GetType(Decimal))
+            dtJoined.Columns.Add("ITEM_STATUS", GetType(String))
+            dtJoined.Columns.Add("NET_QTY", GetType(Integer))
+            dtJoined.Columns.Add("NET_AMOUNT", GetType(Decimal))
+            dtJoined.Columns.Add("CURRENCY", GetType(String))
+            dtJoined.Columns.Add("NET_AMOUNT_TL", GetType(Decimal))
+            dtJoined.Columns.Add("KUR_AED_TL", GetType(Decimal))
+            dtJoined.Columns.Add("ORDER_STATUS", GetType(String))
+
+            'dtJoined.Columns.Add("CANCEL_DATE", GetType(DateTime))
+            dtJoined.Columns.Add("CANCEL_DATE", GetType(String))
+
+            dtJoined.Columns.Add("CANCEL_REASON", GetType(String))
+
+            Dim kur As Decimal = 9.5D
+            Dim inv = CultureInfo.InvariantCulture
+
+            ' Helper lambdas
+            Dim ToDecimal = Function(obj As Object) As Decimal
+                                If obj Is Nothing OrElse obj Is DBNull.Value Then Return 0D
+                                Dim s = Convert.ToString(obj)
+                                Dim d As Decimal
+                                If Decimal.TryParse(s, NumberStyles.Any, inv, d) Then Return d
+                                Return 0D
+                            End Function
+
+            Dim ToInt = Function(obj As Object) As Integer
+                            If obj Is Nothing OrElse obj Is DBNull.Value Then Return 0
+                            Dim s = Convert.ToString(obj)
+                            Dim i As Integer
+                            If Integer.TryParse(s, NumberStyles.Any, inv, i) Then Return i
+                            Return 0
+                        End Function
+
+            ' Build a lookup for refund created dates to avoid DataTable.Rows.Find (no primary key)
+            Dim refundCreatedAt As New Dictionary(Of String, DateTime)(StringComparer.OrdinalIgnoreCase)
+            If dtRefunds IsNot Nothing Then
+                For Each r As DataRow In dtRefunds.Rows
+                    Dim rid As String = Convert.ToString(r("refund_id"))
+                    If Not String.IsNullOrEmpty(rid) Then
+                        Dim cd As DateTime
+                        If DateTime.TryParse(Convert.ToString(r("created_at")), cd) Then
+                            If Not refundCreatedAt.ContainsKey(rid) Then
+                                refundCreatedAt.Add(rid, cd)
+                            End If
+                        End If
+                    End If
+                Next
+            End If
+
+            ' Build joined rows
+            For Each o As DataRow In dtOrders.Rows
+                Dim orderId As String = Convert.ToString(o("id"))
+                Dim orderName As String = Convert.ToString(o("name"))
+                Dim orderDate As DateTime
+                If Not DateTime.TryParse(Convert.ToString(o("created_at")), orderDate) Then orderDate = DateTime.MinValue
+
+                Dim fulfillmentDate As DateTime
+                'DateTime.TryParse(Convert.ToString(o("updated_at")), fulfillmentDate)
+
+                If Not DateTime.TryParse(Convert.ToString(o("updated_at")), fulfillmentDate) Then fulfillmentDate = DateTime.MinValue
+
+                'Dim fulfillmentStatus As String = Convert.ToString(o("fulfillment_status"))
+                Dim fulfillmentStatus As String = Convert.ToString(o("status"))
+
+                Dim currency As String = Convert.ToString(o("currency"))
+                Dim orderStatus As String = Convert.ToString(o("financial_status"))
+                Dim cancelDate As DateTime
+                DateTime.TryParse(Convert.ToString(o("cancelled_at")), cancelDate)
+                Dim cancelReason As String = Convert.ToString(o("cancel_reason"))
+
+                ' find line items for this order
+                Dim liRows() As DataRow = dtLineItems.Select("order_id = '" & orderId.Replace("'", "''") & "'")
+                If liRows.Length = 0 Then
+                    ' still produce a row if needed (no line items) - optional
+                    Continue For
+                End If
+
+                For Each li As DataRow In liRows
+                    Dim olId As String = Convert.ToString(li("id"))
+                    Dim sku As String = Convert.ToString(li("sku"))
+                    Dim qty As Integer = ToInt(li("quantity"))
+                    Dim price As Decimal = ToDecimal(li("price"))
+                    Dim lineTotal As Decimal = qty * price
+                    Dim itemFulfillStatus As String = Convert.ToString(li("fulfillment_status"))
+                    ' itemStatus will be computed via ComputeItemStatus
+                    Dim itemStatusFromLi As String = itemFulfillStatus
+
+                    ' find refunds for this order
+                    Dim refundRows() As DataRow = If(dtRefunds IsNot Nothing, dtRefunds.Select("order_id = '" & orderId.Replace("'", "''") & "'"), New DataRow() {})
+                    ' gather matching refund_line_items for this line item
+                    Dim matchedRLI As New List(Of DataRow)
+                    For Each r As DataRow In refundRows
+                        Dim refundId As String = Convert.ToString(r("refund_id"))
+                        If String.IsNullOrEmpty(refundId) Then Continue For
+                        Dim filter As String = "refund_id = '" & refundId.Replace("'", "''") & "' AND line_item_id = '" & olId.Replace("'", "''") & "'"
+                        Dim rlis() As DataRow = dtRefundLineItems.Select(filter)
+                        If rlis.Length > 0 Then matchedRLI.AddRange(rlis)
+                    Next
+
+                    Dim isCancelled As Boolean = (cancelDate <> DateTime.MinValue)
+                    ' combine item-level and order-level fulfillment status
+
+                    'Dim fulfillStatusCombined As String = If(String.IsNullOrEmpty(itemFulfillStatus), fulfillmentStatus, itemFulfillStatus)
+                    Dim fulfillStatusCombined As String = If(String.IsNullOrEmpty(itemFulfillStatus), "unfulfilled", itemFulfillStatus)
+
+                    ' Normalize "success" to "fulfilled" (matches JS)
+                    If String.Equals(fulfillStatusCombined, "success", StringComparison.OrdinalIgnoreCase) Then
+                        fulfillStatusCombined = "fulfilled"
+                    End If
+
+                    If matchedRLI.Count = 0 Then
+                        ' no refunds for this line item -> one row, refund values zero/null
+                        Dim nr As DataRow = dtJoined.NewRow()
+                        nr("ORDER_ID") = orderId
+                        nr("ORDER_NAME") = orderName
+                        nr("ORDER_DATE") = orderDate
+                        nr("SKU") = sku
+                        nr("QUANTITY") = qty
+                        nr("PRICE") = price
+                        nr("LINE_TOTAL") = lineTotal
+                        nr("FULFILLMENT_DATE") = If(fulfillmentDate = DateTime.MinValue, CType(DBNull.Value, Object), fulfillmentDate)
+                        nr("FULFILLMENT_STATUS") = fulfillStatusCombined
+                        nr("REFUND_DATE") = DBNull.Value
+                        nr("REFUND_QTY") = 0
+                        nr("REFUND_AMOUNT") = 0D
+
+                        Dim computedStatus As String = ComputeItemStatus(isCancelled, fulfillStatusCombined, fulfillmentDate, qty, 0, 0D, False)
+                        nr("ITEM_STATUS") = computedStatus
+
+                        nr("NET_QTY") = qty
+                        nr("NET_AMOUNT") = lineTotal
+                        nr("CURRENCY") = currency
+                        nr("NET_AMOUNT_TL") = lineTotal * kur
+                        nr("KUR_AED_TL") = kur
+                        nr("ORDER_STATUS") = orderStatus
+                        nr("CANCEL_DATE") = If(cancelDate = DateTime.MinValue, CType(DBNull.Value, Object), cancelDate)
+                        nr("CANCEL_REASON") = cancelReason
+                        dtJoined.Rows.Add(nr)
+                    Else
+
+                        For Each rli As DataRow In matchedRLI
+                            Dim refundDate As DateTime = DateTime.MinValue
+                            Dim refundId As String = Convert.ToString(rli("refund_id"))
+
+                            ' Prefer dictionary lookup (safe if no primary keys on DataTables). Fallback to Select.
+                            If Not String.IsNullOrEmpty(refundId) AndAlso refundCreatedAt.ContainsKey(refundId) Then
+                                refundDate = refundCreatedAt(refundId)
+                            ElseIf dtRefunds IsNot Nothing Then
+                                Dim frRows() As DataRow = dtRefunds.Select("refund_id = '" & refundId.Replace("'", "''") & "'")
+                                If frRows.Length > 0 Then DateTime.TryParse(Convert.ToString(frRows(0)("created_at")), refundDate)
+                            End If
+
+                            Dim refundQty As Integer = ToInt(rli("quantity"))
+                            Dim refundAmount As Decimal = ToDecimal(rli("subtotal"))
+
+                            ' Detect removal cases (when subtotal zero and line_item present or restock_type indicates removal)
+                            Dim isRemoval As Boolean = False
+                            If refundAmount = 0 Then
+                                If Not IsDBNull(rli.Table.Columns.Contains("line_item")) AndAlso rli.Table.Columns.Contains("line_item") Then
+                                    ' best-effort: if subtotal is zero and a nested line_item exists, treat as removal (similar to JS)
+                                    isRemoval = True
+                                End If
+                            End If
+                            If rli.Table.Columns.Contains("restock_type") Then
+                                Dim rt = Convert.ToString(rli("restock_type"))
+                                If rt = "no_restock" OrElse rt = "cancel" Then
+                                    isRemoval = True
+                                End If
+                            End If
+
+                            Dim nr As DataRow = dtJoined.NewRow()
+                            nr("ORDER_ID") = orderId
+                            nr("ORDER_NAME") = orderName
+                            nr("ORDER_DATE") = orderDate
+                            nr("SKU") = sku
+                            nr("QUANTITY") = qty
+                            nr("PRICE") = price
+                            nr("LINE_TOTAL") = lineTotal
+                            nr("FULFILLMENT_DATE") = If(fulfillmentDate = DateTime.MinValue, CType(DBNull.Value, Object), fulfillmentDate)
+                            nr("FULFILLMENT_STATUS") = fulfillStatusCombined 'fulfillmentStatus
+                            nr("REFUND_DATE") = If(refundDate = DateTime.MinValue, CType(DBNull.Value, Object), refundDate)
+                            nr("REFUND_QTY") = refundQty
+                            nr("REFUND_AMOUNT") = refundAmount
+
+                            ' compute item status using same rules as computeItemStatus in JS
+                            Dim computedStatus As String = ComputeItemStatus(isCancelled, fulfillStatusCombined, fulfillmentDate, qty, refundQty, refundAmount, isRemoval)
+                            nr("ITEM_STATUS") = computedStatus
+
+                            nr("ITEM_STATUS") = computedStatus
+                            nr("NET_QTY") = Math.Max(0, qty - refundQty)
+                            nr("NET_AMOUNT") = Math.Max(0D, lineTotal - refundAmount)
+                            nr("CURRENCY") = currency
+                            nr("NET_AMOUNT_TL") = Math.Max(0D, (lineTotal - refundAmount) * kur)
+                            nr("KUR_AED_TL") = kur
+                            nr("ORDER_STATUS") = orderStatus
+                            nr("CANCEL_DATE") = If(cancelDate = DateTime.MinValue, CType(DBNull.Value, Object), cancelDate)
+                            nr("CANCEL_REASON") = cancelReason
+                            dtJoined.Rows.Add(nr)
+                        Next
+                    End If
+                Next
+            Next
+
+            Return dtJoined
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function

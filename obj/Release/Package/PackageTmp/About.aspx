@@ -3,12 +3,11 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <main aria-labelledby="title">
     
-
         <div class="container">
             <div class="row" >
                 <div class="col">
 
-                        <h2 id="title"><%: Title %></h2>
+                        <h3 id="title"><%: Title %></h3>
                         <hr />
 
                     <p style="margin-top:30px;">Site under construction.</p>

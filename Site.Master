@@ -14,11 +14,13 @@
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
-    <link href="~/StyleSheet.css" rel="stylesheet" />
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link href="stylesheet.css" rel="stylesheet" />
 
     <style>
         .alignRightHeader {
@@ -29,6 +31,7 @@
             text-align: center;
         }
     </style>
+
 </head>
 
 <body style="background-color: #F5EFE7;">
@@ -37,6 +40,7 @@
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
+                <%--              <asp:ScriptReference Path="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" />--%>
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
@@ -52,27 +56,84 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                <%--  <a class="navbar-brand" runat="server" href="~/">Apps</a>--%>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container" style="margin-top:0px;">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNavbar" title="Toggle navigation" aria-controls="mainNavbar"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="mainNavbar">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Default">Logout</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" runat="server" href="~/Home"><i class="fa-solid fa-house me-1"></i>Home</a>
+                        </li>
+
+                        <li id="liInventory" class="nav-item dropdown" runat="server">
+                            <a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="nav-label"><i class="fa-solid fa-boxes-stacked me-1"></i>Inventory</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                                <li id="PISummary" runat="server"><a class="dropdown-item" href="PISummary.aspx">PI Summary</a></li>
+                                <%--<li id="PI" runat="server"><a class="dropdown-item" href="#"><i class="fa-solid fa-boxes-stacked me-1"></i>Physical Inventory</a></li>--%>
+                                <hr />
+                                <li id="ExportItemMaster" runat="server"><a class="dropdown-item" href="ExportItemMaster.aspx">Export Item Master</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li id="liSales" class="nav-item dropdown" runat="server">
+                            <a class="nav-link dropdown-toggle" href="#" id="SalesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="nav-label"><i class="fa-solid fa-tags me-1"></i>Sales</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="SalesDropdown">
+                                <li id="OnlineSalesComp" runat="server"><a class="dropdown-item" href="OnlineSalesComparison.aspx">Online Sales Comparison</a></li>
+                            </ul>
+                        </li>
+
+                        <li id="liSecurity" class="nav-item dropdown" runat="server">
+                            <a class="nav-link dropdown-toggle" href="#" id="securityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="nav-label"><i class="fa-solid fa-user-shield me-1"></i>Security</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="securityDropdown">
+                                <li><a class="dropdown-item" href="UserList.aspx" onclientclick="showWaitCursor()">Users</a></li>
+                                <li><a class="dropdown-item" href="UserGroupList.aspx">User Group</a></li>
+                                <li><a class="dropdown-item" href="GroupAccess.aspx">Group Access</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" runat="server" href="~/About"><i class="fa-solid fa-book me-1"></i>About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" runat="server" href="~/Contact"><i class="fa-solid fa-address-card me-1"></i>Contact</a>
+                        </li>
+
+                        <li class="nav-item dropdown ms-auto" runat="server" id="liUserDropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <div class="user-avatar me-1">
+                                    <span class="avatar-letter">E</span>
+                                </div>
+                                <%--<i class="fas fa-user me-1"></i>--%>
+
+                                <span id="lblUsername" runat="server"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href='<%="ChangePswrd.aspx?returnUrl=" & Server.UrlEncode(Request.RawUrl) %>'>Change Password</a>
+                                    <a class="dropdown-item" runat="server" href="~/Default">
+                                        <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
 
         <%--  <div class="container body-content" style="border:none;">--%>
-
-
 
         <div id="content" class="content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
@@ -86,12 +147,14 @@
         </div>
 
         <asp:PlaceHolder runat="server">
-            <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+            <%--  <%: Scripts.Render("~/Scripts/bootstrap.js") %>--%>
         </asp:PlaceHolder>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="Scripts/UsernameIcon.js"></script>
 
         <script type="text/javascript">
 
@@ -127,6 +190,59 @@
                 var parts = document.cookie.split(name + "=");
                 if (parts.length == 2) return parts.pop().split(";").shift();
             }
+
+            // --- IDLE TIMEOUT LOGIC ---
+            (function () {
+                var idleTime = 0;
+                // 10 minutes = 10 * 60 * 1000 milliseconds
+                var timeoutLimit = 10 * 60 * 1000;
+                var idleInterval;
+
+                function initIdleTimer() {
+                    // Reset timer on any of these user interactions
+                    $(document).on('mousemove keypress mousedown touchstart scroll', resetIdleTimer);
+
+                    // Increment the idle counter every 1 minute (60000ms)
+                    idleInterval = setInterval(timerIncrement, 60000);
+                }
+
+                function resetIdleTimer() {
+                    idleTime = 0;
+                }
+
+                function timerIncrement() {
+                    idleTime += 60000;
+                    if (idleTime >= timeoutLimit) {
+                        clearInterval(idleInterval);
+                        $(document).off('mousemove keypress mousedown touchstart scroll'); // Stop listening
+
+                        Swal.fire({
+                            title: 'Session Expired',
+                            text: 'You have been inactive for 10 minutes. You will be redirected to the login page.',
+                            icon: 'warning',
+                            confirmButtonColor: '#212529',
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then((result) => {
+                            window.location.href = 'Default.aspx';
+                        });
+
+                        setTimeout(function () {
+                            window.location.href = 'Default.aspx';
+                        }, 5000);
+                    }
+                }
+
+                // Initialize when DOM is fully loaded
+                $(document).ready(function () {
+                    // Prevent this tracking if user is already on Default.aspx or login page
+                    var currentPage = window.location.pathname.toLowerCase();
+                    if (currentPage.indexOf('default.aspx') === -1 && currentPage !== '/') {
+                        initIdleTimer();
+                    }
+                });
+            })();
 
         </script>
 

@@ -24,21 +24,31 @@ Public Class _Default
         Response.Redirect("PISummary.aspx")
     End Sub
 
-    Protected Sub imgBtnPIDetail_Click(sender As Object, e As ImageClickEventArgs) Handles imgBtnPIDetail.Click
-        Response.Redirect("PIDetails.aspx")
-    End Sub
     Private Sub HideAllMenu()
-        imgBtnPI.Visible = False
-        HyperLinkPISummary.Visible = False
+        'imgBtnPI.Visible = False
+        'HyperLinkPISummary.Visible = False
 
-        imgBtnExportItems.Visible = False
-        HyperLinkExportItem.Visible = False
+        imgBtnPICol.Visible = False
+        HyperLinkPISummaryCol.Visible = False
 
-        imgBtnPIDetail.Visible = False
-        HyperLinkPIDetail.Visible = False
+        imgBtnPhysicalInvCol.Visible = False
+        HyperLinkPysicalInvCol.Visible = False
 
-        'imBtnGroupAccess.Visible = False
-        'HyperLinkGroupAccess.Visible = False
+        imgBtnExportItemsCol.Visible = False
+        HyperLinkExportItemCol.Visible = False
+
+        imgBtnOnlineSalesCol.Visible = False
+        HyperLinkOnlineSalesCol.Visible = False
+
+        Dim m As AseelahWebApps.SiteMaster = TryCast(Me.Master, AseelahWebApps.SiteMaster)
+        If m IsNot Nothing Then
+            m.SetSecurityVisible(False)
+            m.SetPISummaryVisible(False)
+            m.SetExportItemMasterVisible(False)
+            m.SetSalesVisible(False)
+            m.SetInventoryVisible(False)
+        End If
+
     End Sub
 
     Private Sub ShowHideMenu()
@@ -51,40 +61,132 @@ Public Class _Default
 
             mclsSQL.OpenDB()
 
-            'strQuery = "SELECT distinct WEBAPP_MODULENAME FROM WEBAPP_GROUP_ACCESS where USER_GROUP_SID='" & GetUserGroupSID(Session("EmpSID")) & "'"
-            strQuery = "select distinct WEBAPP_MODULENAME from WEBAPP_GROUP_ACCESS where USER_GROUP_ID=" & Session("groupid")
+            'strQuery = "select distinct WEBAPP_MODULENAME from WEBAPP_GROUP_ACCESS where USER_GROUP_ID=" & Session("groupid")
+
+            strQuery = "select distinct WEBAPP_MODULENAME,USER_GROUP_ID from WEBAPP_GROUP_ACCESS"
             dt = mclsSQL.GetDataSet(strQuery).Tables(0)
 
-            If dt.Rows.Count <> 0 Then
+            Dim mclsEncrypt As New clsEncryptDecrypt
+            Dim strModule As String, strGroupID As String
 
-                For Each dRow As DataRow In dt.Rows
+            Dim m As AseelahWebApps.SiteMaster = TryCast(Me.Master, AseelahWebApps.SiteMaster)
 
-                    Select Case UCase(dRow.Item(0).ToString)
+            For Each dRow As DataRow In dt.Rows
+                strModule = dRow.Item("WEBAPP_MODULENAME")
+                strGroupID = mclsEncrypt.Decrypt(dRow.Item("USER_GROUP_ID"))
+                strGroupID = Mid(strGroupID, InStr(strGroupID, "--") + 2, 3)
+
+                If Session("groupid") = strGroupID Then
+
+                    Select Case strModule
 
                         Case "PI SUMMARY"
 
-                            imgBtnPI.Visible = True
-                            HyperLinkPISummary.Visible = True
+                            imgBtnPICol.Visible = True
+                            HyperLinkPISummaryCol.Visible = True
 
-                        Case "PI DETAIL"
+                            If m IsNot Nothing Then
+                                m.SetPISummaryVisible(True)
+                            End If
 
-                            imgBtnPIDetail.Visible = True
-                            HyperLinkPIDetail.Visible = True
+                        'Case "PHYSICAL INVENTORY"
+
+
+                            'imgBtnPhysicalInvCol.Visible = True
+                            'HyperLinkPysicalInvCol.Visible = True
+
+                            'If m IsNot Nothing Then
+                            '    m.SetPI(True)
+                            'End If
 
                         Case "EXPORT ITEMS"
-                            imgBtnExportItems.Visible = True
-                            HyperLinkExportItem.Visible = True
 
-                        Case "GROUP ACCESS"
+                            imgBtnExportItemsCol.Visible = True
+                            HyperLinkExportItemCol.Visible = True
 
-                            'imBtnGroupAccess.Visible = True
-                            'HyperLinkGroupAccess.Visible = True
+                            If m IsNot Nothing Then
+                                m.SetExportItemMasterVisible(True)
+                            End If
+
+                        Case "SECURITY"
+
+                            If m IsNot Nothing Then
+                                m.SetSecurityVisible(True)
+                            End If
+
+                        Case "ONLINE SALES COMPARISON"
+                            imgBtnOnlineSalesCol.Visible = True
+                            HyperLinkOnlineSalesCol.Visible = True
+
+                            If m IsNot Nothing Then
+                                m.SetSalesVisible(True)
+                            End If
 
                     End Select
 
-                Next
+                End If
+            Next
 
-            End If
+            'If dt.Rows.Count <> 0 Then
+
+            '    For Each dRow As DataRow In dt.Rows
+
+            '        Dim m As AseelahWebApps.SiteMaster = TryCast(Me.Master, AseelahWebApps.SiteMaster)
+
+            '        Select Case dRow.Item(0).ToString
+
+            '            Case "PI SUMMARY"
+
+            '                imgBtnPICol.Visible = True
+            '                HyperLinkPISummaryCol.Visible = True
+
+            '                'imgBtnPI.Visible = True
+            '                'HyperLinkPISummary.Visible = True
+
+            '                If m IsNot Nothing Then
+            '                    m.SetPISummaryVisible(True)
+            '                End If
+
+            '            Case "PHYSICAL INVENTORY"
+
+            '                'imgBtnPhysicalInv.Visible = True
+            '                'HyperLinkPysicalInv.Visible = True
+
+            '                imgBtnPhysicalInvCol.Visible = True
+            '                HyperLinkPysicalInvCol.Visible = True
+
+            '                If m IsNot Nothing Then
+            '                    m.SetPI(True)
+            '                End If
+
+            '            Case "EXPORT ITEMS"
+            '                'imgBtnExportItems.Visible = True
+            '                'HyperLinkExportItem.Visible = True
+
+            '                imgBtnExportItemsCol.Visible = True
+            '                HyperLinkExportItemCol.Visible = True
+
+            '                If m IsNot Nothing Then
+            '                    m.SetExportItemMasterVisible(True)
+            '                End If
+
+            '            Case "SECURITY"
+
+            '                If m IsNot Nothing Then
+            '                    m.SetSecurityVisible(True)
+            '                End If
+
+            '            Case "GROUP ACCESS"
+
+            '                'imBtnGroupAccess.Visible = True
+            '                'HyperLinkGroupAccess.Visible = True
+
+            '        End Select
+
+            '    Next
+
+            'End If
+
             mclsSQL.CloseDB()
 
         Catch ex As Exception
@@ -161,8 +263,13 @@ Public Class _Default
         End If
     End Sub
 
+    Protected Sub imgBtnPhysicalInv_Click(sender As Object, e As ImageClickEventArgs) Handles imgBtnPhysicalInv.Click
+        Response.Redirect("Physical_Inventory.aspx")
+    End Sub
 
-
+    Private Sub imgBtnOnlineSales_Click(sender As Object, e As ImageClickEventArgs) Handles imgBtnOnlineSales.Click
+        Response.Redirect("OnlineSalesComparison.aspx")
+    End Sub
 
     'Private Sub imBtnGroupAccess_Click(sender As Object, e As ImageClickEventArgs) Handles imBtnGroupAccess.Click
     '    Response.Redirect("GroupAccess.aspx")

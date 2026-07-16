@@ -12,10 +12,12 @@ Public Class clsOracleDB
     Public Sub New(strOracleConnection As String)
         Try
 
-            Dim connectionString As String = ConfigurationManager.ConnectionStrings(strOracleConnection).ConnectionString
+            'Dim connectionString As String = ConfigurationManager.ConnectionStrings(strOracleConnection).ConnectionString
 
             oraCN = New OracleConnection
-            oraCN.ConnectionString = connectionString
+            'oraCN.ConnectionString = connectionString
+
+            oraCN.ConnectionString = strOracleConnection
 
         Catch ex As Exception
             Throw ex
@@ -55,7 +57,7 @@ Public Class clsOracleDB
                 .Connection = oraCN
                 .CommandType = CommandType.Text
                 .CommandText = strQuery
-                .CommandTimeout = 120
+                .CommandTimeout = 300
                 .ExecuteNonQuery()
             End With
 
@@ -72,7 +74,7 @@ Public Class clsOracleDB
                 .Connection = oraCN
                 .CommandType = CommandType.StoredProcedure
                 .CommandText = strSPName
-                .CommandTimeout = 120
+                .CommandTimeout = 300
                 .ExecuteNonQuery()
             End With
 
@@ -92,7 +94,7 @@ Public Class clsOracleDB
                 .Connection = oraCN
                 .CommandType = CommandType.StoredProcedure
                 .CommandText = strSPName
-                .CommandTimeout = 120
+                .CommandTimeout = 300
 
                 If Not paramName Is Nothing Then
                     For i As Integer = 0 To paramName.Length - 1
@@ -115,45 +117,6 @@ Public Class clsOracleDB
         End Try
     End Sub
 
-    Public Function GetInventoryReport() As DataTable
-        Dim dt As New DataTable("InventoryDetails")
-
-        ' Update with your actual connection string details
-        Dim connString As String = "User Id=<User>;Password=<Password>;Data Source=<Host>:<Port>/<ServiceName>;"
-
-        Using conn As New OracleConnection(connString)
-            Using cmd As New OracleCommand("REPORTUSER.XXASH_INV_DETAIL_DT_RPT", conn)
-                cmd.CommandType = CommandType.StoredProcedure
-
-                ' 1. Add Input Parameters
-                cmd.Parameters.Add("p_StoreCode", OracleDbType.Varchar2).Value = "IP10"
-                cmd.Parameters.Add("p_PiSID", OracleDbType.Varchar2).Value = "753441701100091976"
-
-                ' 2. Add Output RefCursor Parameter (This maps to :results)
-                Dim refCursor As New OracleParameter()
-                refCursor.ParameterName = "p_InvDetail"
-                refCursor.OracleDbType = OracleDbType.RefCursor
-                refCursor.Direction = ParameterDirection.Output
-                cmd.Parameters.Add(refCursor)
-
-                Try
-                    conn.Open()
-
-                    ' 3. Use an OracleDataAdapter to fill the DataTable
-                    Using da As New OracleDataAdapter(cmd)
-                        da.Fill(dt)
-                    End Using
-
-                Catch ex As Exception
-                    ' Handle exceptions (logging, re-throwing, etc.)
-                    Console.WriteLine("Error: " & ex.Message)
-                End Try
-            End Using
-        End Using
-
-        Return dt
-    End Function
-
     Public Function GetDatatableSP(ByVal strSPName As String, ByVal paramName() As String, ByVal paramDBType() As OracleDbType, ByVal paramValue() As String, outputParam As String) As DataTable
         Try
 
@@ -165,7 +128,7 @@ Public Class clsOracleDB
                 .Connection = oraCN
                 .CommandType = CommandType.StoredProcedure
                 .CommandText = strSPName
-                .CommandTimeout = 120
+                .CommandTimeout = 600
 
                 If Not paramName Is Nothing Then
                     For i As Integer = 0 To paramName.Length - 1
@@ -199,7 +162,6 @@ Public Class clsOracleDB
             Throw ex
         End Try
     End Function
-
 
     Public Function GetDataSet(ByVal strSQLQuery As String) As DataSet
         Try
@@ -281,17 +243,33 @@ Public Class clsOracleDB
             Next
 
 
-            ' Loop through each data row and execute insert statement
+            '' Loop through each data row and execute insert statement
+            'For rowIndex As Integer = 0 To dataTable.Rows.Count - 1
+            '    ' Set parameter values for each cell in the current row
+            '    For colIndex As Integer = 0 To dataTable.Columns.Count - 1
+            '        sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+            '    Next
+
+            '    sqlCommand.ExecuteNonQuery()
+            'Next
+
             For rowIndex As Integer = 0 To dataTable.Rows.Count - 1
                 ' Set parameter values for each cell in the current row
                 For colIndex As Integer = 0 To dataTable.Columns.Count - 1
-                    sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+                    If dataTable.Columns(colIndex).ColumnName.ToUpper.Contains("DATE") Then
+                        If dataTable.Rows(rowIndex).Item(colIndex).ToString = "" Then
+                            sqlCommand.Parameters(colIndex).Value = DBNull.Value
+                        Else
+                            sqlCommand.Parameters(colIndex).Value = Format(CDate(dataTable.Rows(rowIndex).Item(colIndex)), "dd-MMM-yyyy hh:mm:ss tt")
+                        End If
+                    Else
+                        sqlCommand.Parameters(colIndex).Value = dataTable.Rows(rowIndex).Item(colIndex)
+                    End If
                 Next
 
                 sqlCommand.ExecuteNonQuery()
             Next
 
-            'Console.WriteLine("Data imported successfully to table: " & tableName)
         Catch ex As Exception
             Throw ex
             'Finally

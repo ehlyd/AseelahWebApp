@@ -14,6 +14,78 @@ Option Explicit On
 Partial Public Class SiteMaster
 
     '''<summary>
+    '''liInventory control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liInventory As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''PISummary control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents PISummary As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''ExportItemMaster control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ExportItemMaster As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''liSales control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liSales As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''OnlineSalesComp control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents OnlineSalesComp As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''liSecurity control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liSecurity As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''liUserDropdown control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liUserDropdown As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblUsername control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblUsername As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''MainContent control.
     '''</summary>
     '''<remarks>
