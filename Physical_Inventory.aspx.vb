@@ -43,7 +43,8 @@ Public Class Physical_Inventory
 
     Private Sub FillSubsidiary()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -69,7 +70,8 @@ Public Class Physical_Inventory
 
     Private Sub FillStore()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -109,7 +111,8 @@ Public Class Physical_Inventory
             strSBSNo = Session("pisbs_no")
             strStoreCode = Session("store_code")
 
-            Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            Dim mclsOra As New clsOracleDB(EBSSTG_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -242,7 +245,8 @@ Public Class Physical_Inventory
     Private Sub InitializeGridHeader()
         Try
             Dim strQuery As String, dt As DataTable
-            Dim mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra = New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
             strQuery = "SELECT ''barcode,''alu,''style,''color,''item_size,''description, ''arabic_desription,
 		                          ''start_qty,''scan_qty,'' discrepancy_qty from dual"
@@ -298,7 +302,8 @@ Public Class Physical_Inventory
                 If Session("ScanQty") <> "0" And Session("ImportedQty") = "0" Then
 
                     '------------------------pi sheet
-                    mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+                    'mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+                    mclsOra = New clsOracleDB(RetailPro_OracleConnectionString)
                     mclsOra.OpenDB()
                     strQuery = "SELECT i.upc barcode, i.alu,i.description1 style, i.ATTRIBUTE color, i.item_size,
                                 i.description2 description, i.description3 arabic_desription,
@@ -324,7 +329,7 @@ Public Class Physical_Inventory
                     btnImport.Enabled = False
 
                     '------------------------pi imported
-                    mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+                    mclsOra = New clsOracleDB(RetailPro_OracleConnectionString)
                     mclsOra.OpenDB()
                     strQuery = "SELECT i.upc barcode, i.alu,i.description1 style, i.ATTRIBUTE color, i.item_size,
                                 i.description2 description, i.description3 arabic_desription,
@@ -363,7 +368,8 @@ Public Class Physical_Inventory
                 ElseIf Session("ScanQty") = "0" And Session("ImportedQty") = "0" Then
 
                     '------------------------ebs qty
-                    mclsOra = New clsOracleDB("EBS_STG_OracleConnection")
+                    'mclsOra = New clsOracleDB("EBS_STG_OracleConnection")
+                    mclsOra = New clsOracleDB(EBSSTG_OracleConnectionString)
                     mclsOra.OpenDB()
 
                     strQuery = "SELECT BARCODE,ALU,DESCRIPTION1 STYLE,""ATTRIBUTE""COLOR,ITEM_SIZE,DESCRIPTION2,DESCRIPTION3,I.QTY
@@ -391,7 +397,7 @@ Public Class Physical_Inventory
                 End If
 
                 '------------------------add counts
-                mclsOra = New clsOracleDB("RetailPro_OracleConnection")
+                mclsOra = New clsOracleDB(RetailPro_OracleConnectionString)
                 mclsOra.OpenDB()
                 strQuery = "SELECT i.upc barcode, i.alu,i.description1 style, i.ATTRIBUTE color, i.item_size,
                             i.description2 description, i.description3 arabic_desription,
@@ -420,7 +426,8 @@ Public Class Physical_Inventory
             Else
 
                 '------------------------ebs qty
-                mclsOra = New clsOracleDB("EBS_STG_OracleConnection")
+                'mclsOra = New clsOracleDB("EBS_STG_OracleConnection")
+                mclsOra = New clsOracleDB(EBSSTG_OracleConnectionString)
                 mclsOra.OpenDB()
 
                 'strQuery = "SELECT BARCODE,ALU,DESCRIPTION1 STYLE,""ATTRIBUTE""COLOR,ITEM_SIZE,DESCRIPTION2,DESCRIPTION3,I.QTY START_QTY,Q.QTY SCAN_QTY,
@@ -594,7 +601,7 @@ Public Class Physical_Inventory
         Try
             Dim strQuery As String = ""
             Dim dt As DataTable
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
             strQuery = "SELECT * FROM RPS.PI_sheet p INNER JOIN rps.STORE st ON p.STORE_SID=st.sid
                         INNER JOIN rps.SUBSIDIARY sb ON sb.sid=st.SBS_SID
@@ -661,7 +668,7 @@ Public Class Physical_Inventory
         Try
             Dim strQuery As String = ""
             Dim dt As DataTable
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
             strQuery = "SELECT to_char(UPC) BARCODE,i.DESCRIPTION1 STYLE,i.""ATTRIBUTE"" COLOR,ITEM_SIZE ""SIZE"" FROM 
                         rps.INVN_SBS_ITEM i INNER JOIN rps.SUBSIDIARY sb ON i.SBS_SID=sb.sid
@@ -807,7 +814,8 @@ Public Class Physical_Inventory
                     strInvNo = Session("invno")
                 End If
 
-                Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+                'Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+                Dim mclsOra As New clsOracleDB(EBSSTG_OracleConnectionString)
                 mclsOra.OpenDB()
 
                 dt = dvBadScans.Table.Copy

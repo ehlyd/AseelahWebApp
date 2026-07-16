@@ -8,6 +8,81 @@ Module Module1
 
     Public APIUsername, APIPassword As String
 
+    Public Function RetailPro_OracleConnectionString() As String
+
+        Dim strDatasource As String = "", strUserID As String = "", strPassword As String = ""
+        strDatasource = GetSettingValue("RP_DATASOURCE")
+        strUserID = GetSettingValue("RP_USERID")
+        strPassword = GetSettingValue("RP_PSWRD")
+
+        Return "Data Source=" & strDatasource & ";User ID=" & strUserID & ";Password=" & strPassword
+
+    End Function
+
+    Public Function EBSSTG_OracleConnectionString() As String
+
+        Dim strDatasource As String = "", strUserID As String = "", strPassword As String = ""
+        strDatasource = GetSettingValue("EBSSTG_DATASOURCE")
+        strUserID = GetSettingValue("EBSSTG_USERID")
+        strPassword = GetSettingValue("EBSSTG_PSWRD")
+
+        Return "Data Source=" & strDatasource & ";User ID=" & strUserID & ";Password=" & strPassword
+
+    End Function
+
+    Public Function EBSCloud_OracleConnectionString() As String
+        Dim mclsSQL As New clsSQLDB
+        Try
+            Dim strDatasource As String = "", strUserID As String = "", strPassword As String = ""
+            strDatasource = GetSettingValue("EBSCLOUD_DATASOURCE")
+            strUserID = GetSettingValue("EBSCLOUD_USERID")
+            strPassword = GetSettingValue("EBSCLOUD_PSWRD")
+
+            Return "Data Source=" & strDatasource & ";User ID=" & strUserID & ";Password=" & strPassword
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            mclsSQL.CloseDB()
+        End Try
+    End Function
+
+    Public Function IpekyolShopify_URL() As String
+        Return GetSettingValue("IPEKYOLSHOPIFY_URL")
+    End Function
+
+    Public Function IpekyolShopify_AccessToken() As String
+        Return GetSettingValue("IPEKYOLSHOPIFY_ACCESSTOKEN")
+    End Function
+
+    Public Function EmailSender() As String
+        Return GetSettingValue("EMAIL_SENDER")
+    End Function
+
+    Public Function EmailPassword() As String
+        Return GetSettingValue("EMAIL_PASSWORD")
+    End Function
+
+    Private Function GetSettingValue(strSettingName As String) As String
+        Dim mclsSQL As New clsSQLDB
+        Try
+            Dim strValue As String = ""
+            Dim dt As DataTable
+            mclsSQL.OpenDB()
+            dt = mclsSQL.GetDataSet("select * from BrandIntegration_Settings where upper(IntegrationName)='WEB_REPORTMANAGER' and upper(SettingName)='" & strSettingName & "'").Tables(0)
+            If dt.Rows.Count <> 0 Then
+                strValue = IIf(IsDBNull(dt.Rows(0).Item("SettingValue")), "", dt.Rows(0).Item("SettingValue"))
+            End If
+
+            Return strValue
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            mclsSQL.CloseDB()
+        End Try
+    End Function
+
     Public Sub ShowMessageAlert(ByVal page As System.Web.UI.Page, strMessage As String, strMessageType As String)
 
         Dim script As String
@@ -113,8 +188,10 @@ Module Module1
     Public Sub SendEmail(ByVal subject As String, ByVal body As String, ByVal EmailRecipient As String)
 
         Dim strEmailSender, strEmailPswrd As String
-        strEmailSender = "noreply@aseelah.com"
-        strEmailPswrd = "Gop01140"
+        'strEmailSender = "noreply@aseelah.com"
+        'strEmailPswrd = "Gop01140"
+        strEmailSender = EmailSender()
+        strEmailPswrd = EmailPassword()
 
         Dim smtpClient As New SmtpClient("smtp-mail.outlook.com", 587)
         smtpClient.Credentials = New NetworkCredential(strEmailSender, strEmailPswrd)

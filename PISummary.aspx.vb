@@ -26,7 +26,9 @@ Public Class PISummary
 
     Private Sub FillSubsidiary()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -50,7 +52,8 @@ Public Class PISummary
 
     Private Sub FillStore()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
             Dim strQuery As String
 
@@ -85,7 +88,8 @@ Public Class PISummary
             strSBSNo = Session("sbs_no")
             strStoreCode = Session("store_code")
 
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -169,7 +173,8 @@ Public Class PISummary
 
     Private Sub ShowCountReport(strPIName As String)
 
-        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
         Dim dt As DataTable
         Dim strQuery As String = ""
 
@@ -322,7 +327,8 @@ Public Class PISummary
     Private Sub DownloadPIDetails(PiSID As String, PIName As String)
         Try
             Dim dt As DataTable
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
 
             Dim strStoreCode As String = Session("store_code")

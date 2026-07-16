@@ -29,7 +29,8 @@ Public Class OnlineSalesComparison
 
     Private Sub FillSubsidiary()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
 
             mclsOra.OpenDB()
@@ -53,7 +54,8 @@ Public Class OnlineSalesComparison
 
     Private Sub FillStore()
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
             Dim strQuery As String
 
@@ -123,7 +125,8 @@ Public Class OnlineSalesComparison
             Dim dt As DataTable, strQuery As String = ""
 
 
-            Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("EBS_STG_OracleConnection")
+            Dim mclsOra As New clsOracleDB(EBSSTG_OracleConnectionString)
             mclsOra.OpenDB()
 
             strQuery = "SELECT TO_CHAR(ORDER_CREATED_DATE,'YYYY-MM-DD')ORDER_CREATED_DATE,ORDER_ID,ORDER_REFERENCE,INVOICE_NUMBER,PRODUCT_REFERENCE,TO_CHAR(PRODUCT_EAN13)BARCODE,QUANTITY,UNIT_PRICE,LINE_TOTAL,
@@ -184,8 +187,11 @@ Public Class OnlineSalesComparison
             Dim strFromDate As String = txtFromDate.Text.Trim() & "T00:00:00Z"
             Dim strtoDate As String = txtToDate.Text.Trim() & "T23:59:59Z"
 
-            Dim strShopifyURL As String = ConfigurationManager.AppSettings("IpekyolShopify_URL")
-            Dim strShopifyToken As String = ConfigurationManager.AppSettings("IpekyolShopify_AccessToken")
+            'Dim strShopifyURL As String = ConfigurationManager.AppSettings("IpekyolShopify_URL")
+            'Dim strShopifyToken As String = ConfigurationManager.AppSettings("IpekyolShopify_AccessToken")
+
+            Dim strShopifyURL As String = IpekyolShopify_URL()
+            Dim strShopifyToken As String = IpekyolShopify_AccessToken()
 
             '=====================================================
             ' normalize date boundaries
@@ -325,7 +331,8 @@ Public Class OnlineSalesComparison
     Private Function GetIpekyolOrderNotes() As DataTable
         Try
             Dim dt As DataTable, strQuery As String = ""
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
             strQuery = "select * from XXASH_IPK_SHOPIFY_NOTES"
             dt = mclsOra.GetDataSet(strQuery).Tables(0)
@@ -339,7 +346,9 @@ Public Class OnlineSalesComparison
     End Function
 
     Private Sub SaveIpekyoltoDB(dtIPK As DataTable)
-        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+
+        'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
         Try
             Dim strQuery As String = ""
             mclsOra.OpenDB()
@@ -378,7 +387,8 @@ Public Class OnlineSalesComparison
     End Sub
 
     Private Sub AddMissingOrders(ByRef dtShopify As DataTable, fromDate As Date, toDate As Date)
-        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
         Dim strQuery As String = ""
         Try
             mclsOra.OpenDB()
@@ -1027,7 +1037,8 @@ Public Class OnlineSalesComparison
 
     Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Dim dt As DataTable
             Dim strQuery As String
 
@@ -1035,7 +1046,7 @@ Public Class OnlineSalesComparison
             strQuery = "SELECT NOTES,O.ORDER_NAME,TO_CHAR(ORDER_DATE,'DD-MON-YYYY') ORDER_DATE,O.SKU,VARIANT_TITLE VARIANT,QUANTITY QTY,PRICE,LINE_TOTAL,RETURN_QTY,
                         TO_CHAR(RETURN_DATE,'DD-MON-YYYY')RETURN_DATE,O.ORDER_ID
                         FROM XXASH_IPK_SHOPIFY_ORDERS O LEFT OUTER JOIN XXASH_IPK_SHOPIFY_NOTES C ON O.ORDER_ID=C.ORDER_ID
-                        AND O.ORDER_NAME=C.ORDER_NAME AND O.SKU=C.SKU where O.order_name='" & txtSearch.Text.Trim() & "'"
+                        AND O.ORDER_NAME=C.ORDER_NAME AND O.SKU=C.SKU where upper(O.order_name)='" & txtSearch.Text.ToUpper.Trim & "'"
             dt = mclsOra.GetDataSet(strQuery).Tables(0)
             If dt.Rows.Count <> 0 Then
                 gvOrderDetail.DataSource = dt
@@ -1047,7 +1058,12 @@ Public Class OnlineSalesComparison
                 gvOrderDetail.DataBind()
 
                 Session("dtOrderDetail") = Nothing
+
+                ShowMessageAlert(Me, "Order not found!", "error")
             End If
+
+            txtFilter.Text = ""
+            Session("dtOrderDetailF") = Nothing
             mclsOra.CloseDB()
 
         Catch ex As Exception
@@ -1075,45 +1091,9 @@ Public Class OnlineSalesComparison
     Private Function GetRetailPRO_IpekyolOnlineSales() As DataTable
         Try
             Dim dt As DataTable, strQuery As String = ""
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             mclsOra.OpenDB()
-
-            'strQuery = "SELECT S.*,S.SALES_QTY-S.RETURN_QTY RP_NET_QTY,S.SALES_AMOUNT-S.RETURN_AMOUNT RP_NET_AMOUNT FROM
-            '            (SELECT 
-            '                SALLA_DOC_NO,
-            '                ALU,0 ORDER_QTY,0 ORDER_AMOUNT,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
-            '                         THEN ITEM_ORDER_QTY ELSE 0 END) AS SALES_QTY,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Sale' 
-            '                         THEN ITEM_ORDER_QTY * UNIT_SELLING_PRICE ELSE 0 END) AS SALES_AMOUNT,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Return' 
-            '                         THEN ABS(ITEM_ORDER_QTY) ELSE 0 END) AS RETURN_QTY,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Return' 
-            '                         THEN ABS(ITEM_ORDER_QTY * UNIT_SELLING_PRICE) ELSE 0 END) AS RETURN_AMOUNT
-            '            FROM XXASH_RP_ORDER_STATUS_BYITEM
-            '            WHERE SUBSIDIARY_NO = 4
-            '              AND SALLA_DOC_NO LIKE '%IPK%'
-            '              AND INVOICE_TYPE IN ('Sale','Return')        
-            '              AND UPC <> '64269' 
-            '            GROUP BY SALLA_DOC_NO, ALU
-            '        ORDER BY SALLA_DOC_NO)S    
-            '    UNION ALL    
-            '        SELECT S.*,S.ORDER_QTY RP_NET_QTY,S.ORDER_AMOUNT RP_NET_AMOUNT FROM
-            '            (SELECT 
-            '                SALLA_DOC_NO,
-            '                ALU,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Order' 
-            '                         THEN ITEM_ORDER_QTY ELSE 0 END) AS ORDER_QTY,
-            '                SUM(CASE WHEN INVOICE_TYPE = 'Order' 
-            '                         THEN ITEM_ORDER_QTY * UNIT_SELLING_PRICE ELSE 0 END) AS ORDER_AMOUNT,
-            '                         0 SALES_QTY,0 SALES_AMOUNT,0 RETURN_QTY,0 RETURN_AMOUNT           
-            '            FROM XXASH_RP_ORDER_STATUS_BYITEM
-            '            WHERE SUBSIDIARY_NO = 4
-            '              AND SALLA_DOC_NO LIKE '%IPK%'          
-            '            AND INVOICE_TYPE IN ('Order') and ORDER_STATUS='Pending'
-            '              AND UPC <> '64269' 
-            '            GROUP BY SALLA_DOC_NO, ALU
-            '        ORDER BY SALLA_DOC_NO)S"
 
             strQuery = "SELECT * FROM XXASH_IPK_ORDER_STATUS_V"
 
@@ -1279,56 +1259,54 @@ Public Class OnlineSalesComparison
     End Function
 
 
+    'Private Function ComputeItemStatus(isCancelled As Boolean, fulfillStatus As String, fulfillDate As DateTime, qty As Integer, refundQty As Integer, refundAmount As Decimal, isRemoval As Boolean, Optional returnQty As Integer = 0, Optional isReturn As Boolean = False, Optional refundFailed As Boolean = False) As String
+    '    Try
+    '        If isCancelled Then
+    '            Return "cancelled"
+    '        End If
+
+    '        Dim fulfilled As Boolean = False
+
+    '        If Not String.IsNullOrEmpty(fulfillStatus) AndAlso String.Equals(fulfillStatus, "fulfilled", StringComparison.OrdinalIgnoreCase) Then
+    '            fulfilled = True
+    '        End If
+
+    '        If Not String.IsNullOrEmpty(fulfillStatus) AndAlso String.Equals(fulfillStatus, "success", StringComparison.OrdinalIgnoreCase) Then
+    '            fulfilled = True
+    '        End If
+
+    '        If refundQty > 0 AndAlso refundFailed Then
+    '            Return "refund_failed"
+    '        End If
+
+    '        If refundQty > 0 AndAlso Not refundFailed Then
+    '            If fulfilled AndAlso refundQty >= qty Then
+    '                Return "refunded"
+    '            End If
+    '            If fulfilled AndAlso refundQty < qty Then
+    '                Return "partially_refunded"
+    '            End If
+    '        End If
+
+    '        If returnQty > 0 AndAlso isReturn Then
+    '            Return "returned"
+    '        End If
+
+    '        If Not fulfilled AndAlso (refundQty > 0 OrElse isRemoval) Then
+    '            Return "removed"
+    '        End If
+
+    '        If fulfilled Then
+    '            Return "fulfilled"
+    '        End If
 
 
-    Private Function ComputeItemStatus(isCancelled As Boolean, fulfillStatus As String, fulfillDate As DateTime, qty As Integer, refundQty As Integer, refundAmount As Decimal, isRemoval As Boolean, Optional returnQty As Integer = 0, Optional isReturn As Boolean = False, Optional refundFailed As Boolean = False) As String
-        Try
-            If isCancelled Then
-                Return "cancelled"
-            End If
-
-            Dim fulfilled As Boolean = False
-
-            If Not String.IsNullOrEmpty(fulfillStatus) AndAlso String.Equals(fulfillStatus, "fulfilled", StringComparison.OrdinalIgnoreCase) Then
-                fulfilled = True
-            End If
-
-            If Not String.IsNullOrEmpty(fulfillStatus) AndAlso String.Equals(fulfillStatus, "success", StringComparison.OrdinalIgnoreCase) Then
-                fulfilled = True
-            End If
-
-            If refundQty > 0 AndAlso refundFailed Then
-                Return "refund_failed"
-            End If
-
-            If refundQty > 0 AndAlso Not refundFailed Then
-                If fulfilled AndAlso refundQty >= qty Then
-                    Return "refunded"
-                End If
-                If fulfilled AndAlso refundQty < qty Then
-                    Return "partially_refunded"
-                End If
-            End If
-
-            If returnQty > 0 AndAlso isReturn Then
-                Return "returned"
-            End If
-
-            If Not fulfilled AndAlso (refundQty > 0 OrElse isRemoval) Then
-                Return "removed"
-            End If
-
-            If fulfilled Then
-                Return "fulfilled"
-            End If
-
-
-            Return "unfulfilled"
-        Catch ex As Exception
-            ' in case of unexpected data, fall back to unfulfilled
-            Return "unfulfilled"
-        End Try
-    End Function
+    '        Return "unfulfilled"
+    '    Catch ex As Exception
+    '        ' in case of unexpected data, fall back to unfulfilled
+    '        Return "unfulfilled"
+    '    End Try
+    'End Function
 
     Protected Sub btnFilter_Click(sender As Object, e As EventArgs) Handles btnFilter.Click
         Try
@@ -1342,7 +1320,7 @@ Public Class OnlineSalesComparison
                 gvOrderDetail.DataSource = dv
                 gvOrderDetail.DataBind()
 
-                Session("dtOrderDetail") = dv.ToTable
+                Session("dtOrderDetailF") = dv.ToTable
 
             End If
         Catch ex As Exception
@@ -1372,7 +1350,8 @@ Public Class OnlineSalesComparison
     End Sub
 
     Private Sub UpdateNote(strNote As String, strOrderID As String, strOrderName As String, strSKU As String)
-        Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+        Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
         Try
             mclsOra.OpenDB()
 
@@ -1408,7 +1387,9 @@ Public Class OnlineSalesComparison
 
     Private Sub ddlStore_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlStore.SelectedIndexChanged
         Session("store_code") = Mid(ddlStore.SelectedValue, 1, InStr(ddlStore.SelectedValue, "-") - 1)
+
     End Sub
+
 
     Private Function ComputeItemStatus(
     isCancelled As Boolean,
@@ -1496,7 +1477,8 @@ Public Class OnlineSalesComparison
             Dim orderName As String = Convert.ToString(gvOrderDetail.DataKeys(e.RowIndex).Values("ORDER_NAME"))
             Dim sku As String = Convert.ToString(gvOrderDetail.DataKeys(e.RowIndex).Values("SKU"))
 
-            Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            'Dim mclsOra As New clsOracleDB("RetailPro_OracleConnection")
+            Dim mclsOra As New clsOracleDB(RetailPro_OracleConnectionString)
             Try
                 mclsOra.OpenDB()
 

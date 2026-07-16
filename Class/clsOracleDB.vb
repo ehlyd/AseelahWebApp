@@ -12,10 +12,12 @@ Public Class clsOracleDB
     Public Sub New(strOracleConnection As String)
         Try
 
-            Dim connectionString As String = ConfigurationManager.ConnectionStrings(strOracleConnection).ConnectionString
+            'Dim connectionString As String = ConfigurationManager.ConnectionStrings(strOracleConnection).ConnectionString
 
             oraCN = New OracleConnection
-            oraCN.ConnectionString = connectionString
+            'oraCN.ConnectionString = connectionString
+
+            oraCN.ConnectionString = strOracleConnection
 
         Catch ex As Exception
             Throw ex
