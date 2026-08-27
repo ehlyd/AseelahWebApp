@@ -2,8 +2,8 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\ehly\source\AseelahWebApps\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2026-07-23T08:11:42.9495669Z||;True|2026-07-20T14:20:24.0797394+03:00||;True|2026-07-16T09:00:39.3887471+03:00||;True|2026-07-14T13:32:56.0270509+03:00||;True|2026-07-14T12:45:05.5007454+03:00||;True|2026-07-07T11:26:17.4677499+03:00||;True|2026-07-07T10:46:22.1590862+03:00||;True|2026-07-07T08:49:03.3300282+03:00||;True|2026-07-07T08:45:52.4685109+03:00||;True|2026-07-06T15:03:17.1432837+03:00||;</History>
+    <_PublishTargetUrl>C:\Users\idabu\OneDrive - Al Jedaie Group\source code\AseelahWebApp\bin\app.publish\</_PublishTargetUrl>
+    <History>True|2026-08-10T12:28:41.7257338Z||;True|2026-08-10T09:25:32.1292282+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -20,10 +20,10 @@
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.dll">
-      <publishTime>07/23/2026 14:25:41</publishTime>
+      <publishTime>08/10/2026 15:28:39</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.pdb">
-      <publishTime>07/23/2026 14:25:41</publishTime>
+      <publishTime>08/10/2026 15:28:39</publishTime>
     </File>
     <File Include="bin/de/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -329,7 +329,7 @@
       <publishTime>02/11/2014 15:26:04</publishTime>
     </File>
     <File Include="bin/WebForms_Basic.xml">
-      <publishTime>07/23/2026 14:25:40</publishTime>
+      <publishTime>08/10/2026 15:28:39</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
@@ -707,7 +707,7 @@
       <publishTime>05/20/2025 12:49:21</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/14/2026 12:45:04</publishTime>
+      <publishTime>08/10/2026 09:25:05</publishTime>
     </File>
   </ItemGroup>
 </Project>

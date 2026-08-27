@@ -757,6 +757,24 @@ Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
+<member name="F:AseelahWebApps.OnlineSalesComparison._chkNote">
+<summary>
+chkNote control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AseelahWebApps.OnlineSalesComparison._chkRetailPro">
+<summary>
+chkRetailPro control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
 <member name="F:AseelahWebApps.OnlineSalesComparison._gvOrderDetail">
 <summary>
 gvOrderDetail control.

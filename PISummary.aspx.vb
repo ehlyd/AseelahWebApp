@@ -146,14 +146,21 @@ Public Class PISummary
             Dim rds As New Microsoft.Reporting.WebForms.ReportDataSource("DataSet1", dt)
             ReportViewer1.LocalReport.DataSources.Add(rds)
 
-            ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report/Report1.rdlc")
-
-            ReportViewer1.LocalReport.DisplayName = "Showroom Count Form"
+            If ddlStore.Text.ToUpper.Contains("IP17") Then
+                ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report/ReportIPKEcom.rdlc")
+                ReportViewer1.LocalReport.DisplayName = "Ipekyol Salasa Count Form"
+            ElseIf ddlStore.Text.ToUpper.Contains("JC04") Then
+                ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report/ReportJACEcom.rdlc")
+                ReportViewer1.LocalReport.DisplayName = "Jacadi Salasa Count Form"
+            Else
+                ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report/Report1.rdlc")
+                ReportViewer1.LocalReport.DisplayName = "Showroom Count Form"
+            End If
 
             ReportViewer1.LocalReport.Refresh()
 
-        Else
-            ReportViewer1.Visible = False
+            Else
+                ReportViewer1.Visible = False
         End If
     End Sub
 

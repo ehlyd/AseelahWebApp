@@ -2,8 +2,8 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\idabu\OneDrive - Al Jedaie Group\source .net 4.5.1\WebApp\AseelahWebApps\AseelahWebApps\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2026-07-01T12:48:51.3578920Z||;True|2026-05-21T14:43:37.5777760+03:00||;True|2026-05-18T09:50:10.2501814+03:00||;True|2026-05-18T09:41:00.5188140+03:00||;True|2026-05-17T16:35:56.3457357+03:00||;True|2026-05-17T13:07:19.5524703+03:00||;True|2026-05-11T14:34:33.1567664+03:00||;True|2026-05-11T13:11:33.5428111+03:00||;True|2025-11-06T11:35:22.2594359+03:00||;True|2025-11-06T11:29:05.0358789+03:00||;True|2025-11-06T11:28:54.3092009+03:00||;True|2025-10-13T14:13:33.5880806+03:00||;True|2025-10-13T10:28:52.1900427+03:00||;True|2025-10-13T09:27:39.9591149+03:00||;True|2025-10-13T09:20:09.0337822+03:00||;True|2025-09-16T12:15:20.8233013+03:00||;</History>
+    <_PublishTargetUrl>C:\Users\idabu\OneDrive - Al Jedaie Group\brands\brands\source\AseelahWebApps\bin\app.publish\</_PublishTargetUrl>
+    <History>True|2026-08-02T08:27:28.4385457Z||;True|2026-08-02T11:19:59.6362489+03:00||;True|2026-08-02T10:32:13.0174009+03:00||;True|2026-07-30T08:48:10.9102325+03:00||;True|2026-07-29T15:37:56.5598622+03:00||;True|2026-07-28T13:15:38.2574873+03:00||;True|2026-07-01T15:48:51.3578920+03:00||;True|2026-05-21T14:43:37.5777760+03:00||;True|2026-05-18T09:50:10.2501814+03:00||;True|2026-05-18T09:41:00.5188140+03:00||;True|2026-05-17T16:35:56.3457357+03:00||;True|2026-05-17T13:07:19.5524703+03:00||;True|2026-05-11T14:34:33.1567664+03:00||;True|2026-05-11T13:11:33.5428111+03:00||;True|2025-11-06T11:35:22.2594359+03:00||;True|2025-11-06T11:29:05.0358789+03:00||;True|2025-11-06T11:28:54.3092009+03:00||;True|2025-10-13T14:13:33.5880806+03:00||;True|2025-10-13T10:28:52.1900427+03:00||;True|2025-10-13T09:27:39.9591149+03:00||;True|2025-10-13T09:20:09.0337822+03:00||;True|2025-09-16T12:15:20.8233013+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -20,10 +20,10 @@
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.dll">
-      <publishTime>07/01/2026 15:58:38</publishTime>
+      <publishTime>08/02/2026 11:27:26</publishTime>
     </File>
     <File Include="bin/AseelahWebApps.pdb">
-      <publishTime>07/01/2026 15:58:38</publishTime>
+      <publishTime>08/02/2026 11:27:26</publishTime>
     </File>
     <File Include="bin/de/Microsoft.ReportViewer.Common.resources.dll">
       <publishTime>06/01/2024 23:18:50</publishTime>
@@ -329,7 +329,7 @@
       <publishTime>02/11/2014 15:26:04</publishTime>
     </File>
     <File Include="bin/WebForms_Basic.xml">
-      <publishTime>07/01/2026 15:58:38</publishTime>
+      <publishTime>08/02/2026 11:27:26</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
@@ -536,7 +536,7 @@
       <publishTime>09/16/2025 11:42:34</publishTime>
     </File>
     <File Include="OnlineSalesComparison.aspx">
-      <publishTime>05/11/2026 11:38:25</publishTime>
+      <publishTime>07/23/2026 11:11:24</publishTime>
     </File>
     <File Include="Physical_Inventory.aspx">
       <publishTime>12/17/2025 15:51:14</publishTime>
@@ -716,7 +716,7 @@
       <publishTime>05/20/2025 12:49:21</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/01/2026 15:48:50</publishTime>
+      <publishTime>07/28/2026 13:15:26</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -474,18 +474,6 @@ Module Module1
                     End If
                 Next
 
-                '' fallback check for ORDER_STATUS if needed
-                'If orderStateColIndex = -1 Then
-                '    For i As Integer = 0 To dtExcelData.Columns.Count - 1
-                '        If String.Equals(dtExcelData.Columns(i).ColumnName, "ORDER_STATUS", StringComparison.OrdinalIgnoreCase) Then
-                '            orderStateColIndex = i + 1
-                '            Exit For
-                '        End If
-                '    Next
-                'End If
-
-
-
                 If orderStateColIndex > 0 Then
                     For r As Integer = 0 To dtExcelData.Rows.Count - 1
                         Dim excelRow As Integer = r + 4
@@ -661,11 +649,11 @@ Module Module1
                 Next
 
                 ' --------------------------------------------------
-                ' Highlight columns Z to AI (columns 26 to 35) with light green
+                ' Highlight columns Z to AO (columns 26 to 41) with light green
                 ' include header (row 1), all data rows and the total row
-                Dim lightBlue As Color = ColorTranslator.FromHtml("#DAF2D0")
-                Dim startCol As Integer = 24 ' X
-                Dim endCol As Integer = 34   ' AH
+                Dim lightGreen As Color = ColorTranslator.FromHtml("#DAF2D0")
+                Dim startCol As Integer = 26 ' Z
+                Dim endCol As Integer = 41   ' AO
                 Dim highlightFromRow As Integer = 4
                 Dim highlightToRow As Integer = lastRow + 2  ' include totals row
 
@@ -673,7 +661,7 @@ Module Module1
                 For col As Integer = startCol To Math.Min(endCol, totalCols)
                     Dim colRange = ws.Cells(highlightFromRow, col, highlightToRow, col)
                     colRange.Style.Fill.PatternType = ExcelFillStyle.Solid
-                    colRange.Style.Fill.BackgroundColor.SetColor(lightBlue)
+                    colRange.Style.Fill.BackgroundColor.SetColor(lightGreen)
                 Next
                 ' --------------------------------------------------
 
@@ -707,9 +695,11 @@ Module Module1
                   RETURN_DATE         TIMESTAMP(6),
                   RETURN_QTY          NUMBER,
                   RETURN_TYPE         VARCHAR2(20 BYTE),
+                  RETURN_DISPOSITION  VARCHAR2(20 BYTE),
                   REFUND_DATE         TIMESTAMP(6),
                   REFUNDED_QTY        NUMBER,
                   REFUND_AMOUNT       NUMBER,
+                  REFUND_NOTE         VARCHAR2(100 BYTE),
                   ITEM_STATUS         VARCHAR2(30 BYTE),
                   ITEM_RETURNED       VARCHAR2(10 BYTE),
                   NET_QTY             NUMBER,

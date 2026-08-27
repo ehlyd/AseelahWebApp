@@ -5,25 +5,25 @@
     <style>
         @media (min-width: 576px) {
             .OnlineSalesComp {
-                width: 80%;
+                width: 90%;
             }
         }
 
         @media (min-width: 768px) {
             .OnlineSalesComp {
-                width: 70%;
+                width: 80%;
             }
         }
 
         @media (min-width: 992px) {
             .OnlineSalesComp {
-                width: 70%;
+                width: 80%;
             }
         }
 
         @media (min-width: 1200px) {
             .OnlineSalesComp {
-                width: 60%;
+                width: 70%;
             }
         }
     </style>
@@ -80,9 +80,9 @@
                     <asp:Button ID="btnDownload" class="btn btn-secondary btn-sm" Style="width: 120px;" runat="server" Text="Download" OnClick="btnDownload_Click" OnClientClick="downloadClick();" />
                 </div>
             </div>
-            </div>
+        </div>
 
-         <%--   <hr id="hr1" runat="server" />--%>
+        <%--   <hr id="hr1" runat="server" />--%>
         <div class="container OnlineSalesComp" id="ipkaddnote" runat="server" style="border-style: solid; border-color: inherit; border-width: thin; background-color: whitesmoke;">
             <div class="row" style="margin-top: 20px; width: 100%;">
                 <div class="col">
@@ -90,7 +90,7 @@
                         <asp:Label ID="Label5" class="form-label-sm" runat="server" Text="Order Name"></asp:Label>
                         <asp:TextBox ID="txtSearch" class="form-control-sm" Style="margin-left: 17px; width: 343px;" runat="server"></asp:TextBox>
 
-                        <asp:Button ID="btnSearch" runat="server" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" Text="Search" OnClick="btnSearch_Click" />
+                        <asp:Button ID="btnSearch" runat="server" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" Text="Search" OnClick="btnSearch_Click" OnClientClick="WaitCursor();" />
                         <asp:Button ID="btnClear" runat="server" Text="Clear" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
                     </asp:Panel>
                 </div>
@@ -98,19 +98,22 @@
             <div class="row" style="margin-top: 5px; width: 100%;">
                 <div class="col">
                     <asp:Label ID="Label6" runat="server" class="form-label-sm" Text="Filter by SKU"></asp:Label>
-                    <asp:TextBox ID="txtFilter" class="form-control-sm" Style="margin-left: 15px; " runat="server" Width="343px"></asp:TextBox>
+                    <asp:TextBox ID="txtFilter" class="form-control-sm" Style="margin-left: 15px;" runat="server" Width="343px"></asp:TextBox>
                     <asp:Button ID="btnFilter" runat="server" Text="Filter" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
                 </div>
             </div>
             <div class="row" style="margin-top: 5px; width: 100%;">
                 <div class="col">
                     <asp:Label ID="Label7" runat="server" Text="Enter note"></asp:Label>
-                    <asp:TextBox ID="txtNote" class="form-control-sm" Style="margin-left: 31px;" runat="server" Width="368px"></asp:TextBox>
-                    <asp:Button ID="btnUpdateNote" runat="server" Text="Update"  class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" />
-                    </div>
-             </div>
+                    <asp:TextBox ID="txtNote" class="form-control-sm" Style="margin-left: 31px;" runat="server" Width="368px"></asp:TextBox>                   
+                    <asp:Button ID="btnUpdateNote" runat="server" Text="Update" class="btn btn-secondary btn-sm" Style="margin-left: 10px; width: 120px;" OnClientClick="WaitCursor();" />
+                    <asp:CheckBox ID="chkNote" class="form-control-sm" runat="server" Style="margin-left: 10px;" Text="Note" />
+                     <asp:CheckBox ID="chkRetailPro" class="form-control-sm" runat="server" Text="RP Fixed" />
+                </div>
+            </div>
+
             <div class="row" style="margin-top: 10px; width: 100%;">
-                <div class="col" style="overflow-x: auto;">                                     
+                <div class="col" style="overflow-x: auto;">
 
                     <asp:GridView ID="gvOrderDetail" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" Width="100%" Font-Size="Small">
                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
@@ -191,6 +194,10 @@
                     document.cookie = "downloadStarted=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
                 }
             }, 1000);
+        }
+
+        function WaitCursor() {
+            document.documentElement.style.cursor = 'wait';
         }
     </script>
 

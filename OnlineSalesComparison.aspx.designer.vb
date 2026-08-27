@@ -212,6 +212,24 @@ Partial Public Class OnlineSalesComparison
     Protected WithEvents btnUpdateNote As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''chkNote control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkNote As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''chkRetailPro control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkRetailPro As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''gvOrderDetail control.
     '''</summary>
     '''<remarks>

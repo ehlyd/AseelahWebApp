@@ -4,7 +4,7 @@ Imports Newtonsoft.Json
 
 Public Class clsShopifyAPI
 
-    Public Function DownloadOrders(createdAtMin As DateTime, createdAtMax As DateTime, accessToken As String, Optional shopDomain As String = "ipekyol-ksa-ae.myshopify.com") As DataSet
+    Public Function DownloadOrders(createdAtMin As DateTime, createdAtMax As DateTime, accessToken As String, shopDomain As String) As DataSet
         Dim ds As New DataSet("ShopifyOrders")
 
         ' Orders table
@@ -46,6 +46,7 @@ Public Class clsShopifyAPI
         dtLineItems.Columns.Add("vendor", GetType(String))
         'dtLineItems.Columns.Add("taxable", GetType(Boolean))
         dtLineItems.Columns.Add("fulfillment_status", GetType(String))
+        dtLineItems.Columns.Add("return_disposition", GetType(String))
 
         ' Refunds table
         Dim dtRefunds As New DataTable("Refunds")
@@ -102,7 +103,7 @@ Public Class clsShopifyAPI
             Dim maxUtc = createdAtMax.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
             Dim url = $"https://{shopDomain}/admin/api/2024-01/orders.json?status=any&limit=250&fulfillment_status=any&created_at_max={Uri.EscapeDataString(maxUtc)}&created_at_min={Uri.EscapeDataString(minUtc)}"
-            'Dim url = "https://ipekyol-ksa-ae.myshopify.com/admin/api/2024-01/orders.json?status=any&name=IPK1550"
+            'Dim url = "https://ipekyol-ksa-ae.myshopify.com/admin/api/2026-07/orders.json?status=any&name=IPK2457"
 
             ' Create HttpWebRequest (GET)
             Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
@@ -363,6 +364,58 @@ Public Class clsShopifyAPI
         ds.Tables.Add(dtFulfillments)
 
         Return ds
+    End Function
+
+    Public Function GetOrderDispositions(orderID As String, accessToken As String, shopDomain As String) As String
+        Try
+            Dim strGraphQL As String
+            strGraphQL = "{
+                              ""query"": ""query($ids: [ID!]!) { nodes(ids: $ids) { ... on Order { legacyResourceId returns(first: 10) { nodes { reverseFulfillmentOrders(first: 10) { nodes { lineItems(first: 50) { nodes { fulfillmentLineItem { lineItem { id } } dispositions { type quantity } } } } } } } } } }"",
+                              ""variables"": {
+                                ""ids"": [
+                                  ""gid://shopify/Order/" & orderID & """
+                                ]
+                              }
+                           }"
+
+            Console.WriteLine(strGraphQL)
+
+            Dim url = "https://" & shopDomain & "/admin/api/2024-01/graphql.json"
+
+            Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
+            request.Accept = "application/json"
+            request.ContentType = "application/json"
+            request.Method = "POST"
+
+            ' If access token provided, add header
+            If Not String.IsNullOrWhiteSpace(accessToken) Then
+                request.Headers.Add("X-Shopify-Access-Token", accessToken)
+            End If
+
+            request.ServicePoint.ConnectionLimit = 10
+            request.ServicePoint.MaxIdleTime = 5 * 1000
+            request.Timeout = 60000
+            request.KeepAlive = True
+
+            Dim jsonBytes As Byte() = Encoding.UTF8.GetBytes(strGraphQL)
+
+            Dim requestStream As Stream = request.GetRequestStream()
+            requestStream.Write(jsonBytes, 0, jsonBytes.Length)
+            requestStream.Close()
+
+            Dim json As String = String.Empty
+
+            Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+                Using sr As New StreamReader(response.GetResponseStream(), Encoding.UTF8)
+                    json = sr.ReadToEnd()
+                End Using
+            End Using
+
+            Return json
+
+        Catch ex As WebException
+            Throw
+        End Try
     End Function
 
 End Class
